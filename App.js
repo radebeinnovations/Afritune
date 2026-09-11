@@ -28,12 +28,12 @@ const catalog = [
   { title: 'eMcimbini', artist: 'Kabza De Small & DJ Maphorisa', genre: 'Amapiano', query: 'eMcimbini Kabza De Small DJ Maphorisa official' },
 ].map(track => ({ ...track, art: track.videoId ? 'https://i.ytimg.com/vi/' + track.videoId + '/hqdefault.jpg' : 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=700&q=80' }));
 const art = {
-  daily: 'https://i.ytimg.com/vi/OSBan_sH_b8/maxresdefault.jpg',
+  welcome: require('./assets/welcome-portrait.png'),
+  daily: 'https://i.ytimg.com/vi/wlmUnWLaeog/maxresdefault.jpg',
   podcast1: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=500&q=80',
   podcast2: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=500&q=80',
   shows1: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=700&q=80',
-  shows2: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=700&q=80',
-  intro: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=900&q=90'
+  shows2: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=700&q=80'
 };
 
 export default function App() {
@@ -45,9 +45,9 @@ export default function App() {
   const openTrack = track => { setActive(track); setPlayerOpen(true); };
   const visibleTracks = useMemo(() => tracks, [tracks]);
   return <SafeAreaView style={s.safe}><StatusBar style="light" />
-    {screen === 'signup' && <AuthScreen title="Create An Account" button="Sign Up" check="I agree to the terms and conditions" onPress={() => setScreen('signin')} />}
-    {screen === 'signin' && <AuthScreen title="Sign In To Your Account" button="Sign In" check="Remember Me" onPress={() => setScreen('login')} />}
-    {screen === 'login' && <Intro onPress={() => setScreen('home')} />}
+    {screen === 'signup' && <AuthScreen title="Create An Account" button="Sign Up" check="I agree to the terms and conditions" onPress={() => setScreen('welcome')} />}
+    {screen === 'welcome' && <Intro onPress={() => setScreen('signin')} />}
+    {screen === 'signin' && <AuthScreen title="Sign In To Your Account" button="Sign In" check="Remember Me" onPress={() => setScreen('home')} />}
     {['home', 'daily', 'podcasts', 'shows', 'favourites'].includes(screen) && <Shell screen={screen} setScreen={setScreen}>
       {screen === 'home' && <Home setScreen={setScreen} />}
       {screen === 'daily' && <Daily tracks={visibleTracks} openTrack={openTrack} />}
@@ -60,12 +60,12 @@ export default function App() {
 }
 function AuthScreen({ title, button, check, onPress }) { return <View style={s.auth}><Brand dark /><Text style={s.authTitle}><Text style={s.cyan}>{title.split(' ')[0]} </Text>{title.slice(title.indexOf(' ') + 1)}</Text><Field label="Email Address" placeholder="Email Address" /><Field label="Mobile Number" placeholder="Mobile Number" /><Field label="Password" placeholder="Password" secure /><Text style={s.check}>▣  {check}</Text><Pressable style={s.authButton} onPress={onPress}><Text style={s.authButtonText}>{button}</Text></Pressable></View>; }
 function Field({ label, placeholder, secure }) { return <View style={s.field}><Text style={s.fieldLabel}>{label}</Text><TextInput placeholder={placeholder} placeholderTextColor="#788397" secureTextEntry={secure} style={s.input} /></View>; }
-function Intro({ onPress }) { return <View style={s.intro}><Image source={{ uri: art.intro }} style={s.introImage} /><View style={s.introCard}><Text style={s.introTitle}>From Africa,{`\n`}For the World</Text><Pressable style={s.click} onPress={onPress}><Text style={s.clickText}>CLICK  ⊕</Text></Pressable></View></View>; }
-function Shell({ children, screen, setScreen }) { return <View style={s.shell}><Header /><ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={s.content}><Text style={s.sourceNote}>OFFICIAL MUSIC ON YOUTUBE</Text>{children}</ScrollView><Nav screen={screen} setScreen={setScreen} /></View>; }
-function Brand() { return <View style={s.brand}><Text style={s.brandAvatar}>◉</Text><Text style={s.brandMic}>♩</Text><Text style={s.brandText}>AFRITUNE</Text><Text style={s.gear}>⚙</Text></View>; }
+function Intro({ onPress }) { return <View style={{ flex: 1, backgroundColor: '#000' }}><Image source={art.welcome} style={{ width: '100%', height: '70%', resizeMode: 'cover' }} /><View style={{ flex: 1, backgroundColor: '#FFFFFF', marginTop: -44, borderTopLeftRadius: 42, borderTopRightRadius: 42, paddingHorizontal: 42, paddingTop: 58 }}><Text style={{ color: palette.navy, fontSize: 48, lineHeight: 58, fontWeight: '800', letterSpacing: -1.4 }}>From Africa,{`\n`}For the World</Text><Pressable style={{ height: 82, borderRadius: 44, backgroundColor: '#1688F7', alignItems: 'center', justifyContent: 'center', marginTop: 'auto', marginBottom: 28 }} onPress={onPress}><Text style={{ color: '#FFFFFF', fontSize: 22, fontWeight: '900', letterSpacing: .5 }}>CLICK  →</Text></Pressable></View></View>; }
+function Shell({ children, screen, setScreen }) { return <View style={[s.shell, { backgroundColor: '#151515', paddingHorizontal: 0 }]}><View style={{ paddingHorizontal: 22 }}><Header /></View><ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[s.content, { paddingHorizontal: 22 }]}>{children}</ScrollView><Nav screen={screen} setScreen={setScreen} /></View>; }
+function Brand() { return <View style={s.brand}><Image source={art.welcome} style={{ position: 'absolute', left: 0, width: 42, height: 42, borderRadius: 21 }} /><Text style={s.brandMic}>♩</Text><Text style={s.brandText}>AFRITUNE</Text><Text style={s.gear}>⚙</Text></View>; }
 function Header() { return <><Brand /><View style={s.search}><TextInput placeholder="Search..." placeholderTextColor="#4E586A" style={s.searchInput} /><Text style={s.searchIcon}>⌕</Text></View></>; }
-function Home({ setScreen }) { return <><Tile title="Daily Music & Playlists" image={art.daily} onPress={() => setScreen('daily')} /><Tile title="Podcasts and Episodes" image={art.podcast1} onPress={() => setScreen('podcasts')} /><Tile title="Latest Shows & Series" image={art.shows1} onPress={() => setScreen('shows')} /><Tile title="All Time Favourite" image={art.shows2} onPress={() => setScreen('favourites')} /></>; }
-function Tile({ title, image, onPress }) { return <Pressable style={s.tile} onPress={onPress}><Image source={{ uri: image }} style={s.tileImage} /><View style={s.tileShade} /><Text style={s.tileTitle}>{title}</Text></Pressable>; }
+function Home({ setScreen }) { return <View style={{ paddingTop: 28 }}><Tile title="Daily Music &\nPlaylists" image={art.daily} onPress={() => setScreen('daily')} /><Tile title="Podcasts &\nEpisodes" image={art.podcast1} onPress={() => setScreen('podcasts')} /><Tile title="Latest Shows &\nSeries" image={art.shows1} onPress={() => setScreen('shows')} /><Tile title="All Time\nFavourite" image={art.shows2} onPress={() => setScreen('favourites')} /></View>; }
+function Tile({ title, image, onPress }) { return <Pressable style={{ height: 294, borderRadius: 24, overflow: 'hidden', marginBottom: 28, backgroundColor: '#232323' }} onPress={onPress}><Image source={{ uri: image }} style={{ ...StyleSheet.absoluteFillObject, width: undefined, height: undefined }} /><View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,.28)' }} /><Text style={{ color: '#FFFFFF', fontWeight: '900', fontSize: 32, lineHeight: 37, width: '72%', padding: 30, textShadowColor: 'rgba(0,0,0,.35)', textShadowRadius: 7 }}>{title}</Text></Pressable>; }
 function Daily({ tracks, openTrack }) { return <><Text style={s.pageTitle}>Daily Music & Playlists</Text><View style={s.albumRow}><Image source={{ uri: tracks[0].art }} style={s.sideAlbum} /><View><Image source={{ uri: tracks[1].art }} style={s.mainAlbum} /><Text style={s.songName}>Leftie (Dlala Ngcobo)</Text><Text style={s.songArtist}>Nasty C, Blxckie</Text></View><Image source={{ uri: tracks[2].art }} style={s.sideAlbum} /></View><View style={s.transport}><Text>↻</Text><Text>▮◀</Text><Text style={s.playRound}>▶</Text><Text>▶▮</Text><Text>♬</Text></View><Text style={s.release}>Release Countdown{`\n`}<Text style={s.free}>Free{`\n`}2025 - Upcoming Release</Text></Text><Text style={s.listHeader}>Amapiano & Afrobeats</Text><FlatList data={tracks} scrollEnabled={false} keyExtractor={x => x.title} renderItem={({ item }) => <Pressable style={s.track} onPress={() => openTrack(item)}><Image source={{ uri: item.art }} style={s.trackArt} /><View style={{ flex: 1 }}><Text style={s.trackTitle}>{item.title}</Text><Text style={s.trackMeta}>{item.artist}</Text></View><Text style={s.cyan}>▶</Text></Pressable>} /></>; }
 function Podcasts() { return <><Text style={s.pageTitle}>Podcasts and Episodes</Text><View style={s.grid}><Card title="Mindset" image={art.podcast1} /><Card title="Self-Love" image={art.podcast2} /><Card title="Storytime" image={art.daily} /><Card title="Book Review" image={art.shows2} /></View></>; }
 function Shows() { return <><Text style={s.pageTitle}>Shows and Series</Text><Text style={s.subhead}>Your Daily picks</Text><Card title="EMPINI" image={art.shows1} wide /><Text style={s.subhead}>Top picks of the week</Text><Card title="The Silent Hour" image={art.shows2} wide /></>; }
