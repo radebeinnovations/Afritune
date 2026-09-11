@@ -1,0 +1,16 @@
+# Node / Expo
+node_modules/
+dist/
+.expo/
+web-build/
+
+# Local configuration
+.env
+.env.*
+!.env.example
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.log

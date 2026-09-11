@@ -1,0 +1,23 @@
+{
+  "expo": {
+    "name": "Afritune",
+    "slug": "afritune",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "scheme": "afritune",
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.afritune.app"
+    },
+    "android": {
+      "package": "com.afritune.app"
+    },
+    "web": {
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-web-browser"
+    ]
+  }
+}
