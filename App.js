@@ -322,7 +322,7 @@ function BottomNav({ screen, onNavigate }) {
 }
 
 function Player({ track, onClose }) {
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState(true);
   const [position, setPosition] = useState(17);
   const duration = 240;
   useEffect(() => {
@@ -332,7 +332,7 @@ function Player({ track, onClose }) {
   }, [playing]);
   const formatTime = (seconds) => `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
   const progress = `${Math.round((position / duration) * 100)}%`;
-  return <View style={styles.playerOverlay}><View style={styles.playerTop}><Pressable onPress={onClose} accessibilityLabel="Close player" hitSlop={12}><Ionicons name="arrow-back" size={21} color={C.ink} /></Pressable><Text style={styles.nowPlaying}>Now Playing</Text><Pressable accessibilityLabel="More player options" hitSlop={12}><Ionicons name="ellipsis-horizontal" size={21} color={C.ink} /></Pressable></View><View style={styles.playerCarousel}><View style={styles.playerSideArt} /><Image source={{ uri: track.art }} style={styles.playerArt} /><View style={styles.playerSideArt} /></View><Text style={styles.playerName}>{track.title}</Text><Text style={styles.playerArtist}>{track.artist}</Text><View style={styles.waveWrap}>{Array.from({ length: 28 }).map((_, index) => <View key={index} style={[styles.waveBar, { height: 8 + ((index * 13) % 34), backgroundColor: index < 14 ? C.gold : '#D9E1E7' }]} />)}</View><View style={styles.playerProgress}><View style={[styles.playerProgressFill, { width: progress }]} /><View style={[styles.playerThumb, { left: progress }]} /></View><View style={styles.playerTimes}><Text>{formatTime(position)}</Text><Text>{formatTime(duration)}</Text></View><View style={styles.playerControls}><Pressable accessibilityLabel="Shuffle"><Ionicons name="shuffle" size={19} color={C.muted} /></Pressable><Pressable accessibilityLabel="Previous track" onPress={() => setPosition(Math.max(0, position - 10))}><Ionicons name="play-skip-back" size={22} color={C.muted} /></Pressable><Pressable accessibilityLabel={playing ? 'Pause' : 'Play'} onPress={() => setPlaying(!playing)} style={styles.playerMainControl}><Ionicons name={playing ? 'pause' : 'play'} size={26} color={C.paper} /></Pressable><Pressable accessibilityLabel="Next track" onPress={() => setPosition(Math.min(duration, position + 10))}><Ionicons name="play-skip-forward" size={22} color={C.muted} /></Pressable><Pressable accessibilityLabel="Favourite"><Ionicons name="heart" size={19} color="#F04747" /></Pressable></View><Pressable style={styles.lyricsButton}><Ionicons name="chevron-up" size={15} color={C.blue} /><Text style={styles.lyricsText}>Lyrics</Text></Pressable></View>;
+  return <View style={styles.playerOverlay}><View style={styles.playerTop}><Pressable onPress={onClose} accessibilityLabel="Close player" hitSlop={12}><Ionicons name="arrow-back" size={24} color="#293B5A" /></Pressable><Text style={styles.nowPlaying}>Now Playing</Text><Pressable accessibilityLabel="More player options" hitSlop={12}><Ionicons name="ellipsis-horizontal" size={20} color="#293B5A" /></Pressable></View><View style={styles.playerCarousel}><View style={styles.playerSideArt} /><Image source={{ uri: track.art }} style={styles.playerArt} /><View style={styles.playerSideArt} /></View><Text style={styles.playerName}>{track.title}</Text><Text style={styles.playerArtist}>{track.artist}</Text><View style={styles.waveWrap}>{Array.from({ length: 30 }).map((_, index) => { const arc = Math.sin((index / 29) * Math.PI); return <View key={index} style={[styles.waveBar, { height: 17 + Math.round(73 * arc), backgroundColor: index < 15 ? C.gold : '#DEE5ED' }]} />; })}</View><View style={styles.playerProgress}><View style={[styles.playerProgressFill, { width: progress }]} /><View style={[styles.playerThumb, { left: progress }]} /></View><View style={styles.playerTimes}><Text style={styles.elapsedTime}>{formatTime(position)}</Text><Text style={styles.totalTime}>{formatTime(duration)}</Text></View><View style={styles.playerControls}><Pressable accessibilityLabel="Shuffle"><Ionicons name="shuffle" size={22} color="#B5BFD0" /></Pressable><Pressable accessibilityLabel="Previous track" onPress={() => setPosition(Math.max(0, position - 10))}><Ionicons name="play-skip-back" size={24} color="#B5BFD0" /></Pressable><Pressable accessibilityLabel={playing ? 'Pause' : 'Play'} onPress={() => setPlaying(!playing)} style={styles.playerMainControl}><Ionicons name={playing ? 'pause' : 'play'} size={29} color={C.paper} /></Pressable><Pressable accessibilityLabel="Next track" onPress={() => setPosition(Math.min(duration, position + 10))}><Ionicons name="play-skip-forward" size={24} color="#B5BFD0" /></Pressable><Pressable accessibilityLabel="Favourite"><Ionicons name="heart" size={22} color="#F04747" /></Pressable></View><Pressable style={styles.lyricsButton}><Ionicons name="chevron-up" size={17} color={C.blue} /><Text style={styles.lyricsText}>Lyrics</Text></Pressable></View>;
 }
 
 let styles;
@@ -461,22 +461,24 @@ function buildStyles(C) { return StyleSheet.create({
   navIcon: { width: 30, height: 30, resizeMode: 'contain' },
   navDot: { height: 3, width: 3, marginTop: 5, borderRadius: 2, backgroundColor: 'transparent' },
   navDotActive: { width: 17, backgroundColor: C.blue },
-  playerOverlay: { ...StyleSheet.absoluteFillObject, zIndex: 20, backgroundColor: C.paper, paddingHorizontal: 20, paddingTop: 18 },
+  playerOverlay: { ...StyleSheet.absoluteFillObject, zIndex: 20, backgroundColor: C.paper, paddingHorizontal: 28, paddingTop: 58 },
   playerTop: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 3 },
-  nowPlaying: { color: C.ink, fontSize: 11, fontWeight: '900', letterSpacing: .2 },
-  playerCarousel: { height: 164, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 22, marginHorizontal: -20, overflow: 'hidden' },
-  playerSideArt: { width: 58, height: 112, borderRadius: 16, backgroundColor: '#E7EDFF' },
-  playerArt: { width: 136, height: 136, borderRadius: 11, resizeMode: 'cover', backgroundColor: C.soft },
-  playerName: { color: C.ink, fontSize: 15, fontWeight: '900', textAlign: 'center', marginTop: 12 },
-  playerArtist: { color: C.muted, fontSize: 11, fontWeight: '600', textAlign: 'center', marginTop: 5 },
-  waveWrap: { height: 51, flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'center', gap: 3, marginTop: 18 },
-  waveBar: { width: 2, borderRadius: 2 },
-  playerProgress: { height: 2, backgroundColor: '#D9E1E7', borderRadius: 2, marginTop: 4 },
-  playerProgressFill: { height: 2, backgroundColor: C.gold, borderRadius: 2 },
-  playerThumb: { position: 'absolute', top: -3, width: 8, height: 8, borderRadius: 4, backgroundColor: C.gold, marginLeft: -4 },
-  playerTimes: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 6 },
-  playerControls: { flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', paddingHorizontal: 13, marginTop: 18 },
-  playerMainControl: { height: 44, width: 44, borderRadius: 22, backgroundColor: C.gold, alignItems: 'center', justifyContent: 'center' },
-  lyricsButton: { alignSelf: 'center', alignItems: 'center', marginTop: 22 },
-  lyricsText: { color: C.blue, fontSize: 11, fontWeight: '800', marginTop: 1 },
+  nowPlaying: { color: '#293B5A', fontSize: 19, fontWeight: '900', letterSpacing: .1 },
+  playerCarousel: { height: 282, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 22, marginHorizontal: -28, overflow: 'hidden' },
+  playerSideArt: { width: 55, height: 208, borderRadius: 25, backgroundColor: '#E7ECFF' },
+  playerArt: { width: 230, height: 230, borderRadius: 15, resizeMode: 'cover', backgroundColor: C.soft, shadowColor: '#AAB5C4', shadowOffset: { width: 0, height: 11 }, shadowOpacity: .2, shadowRadius: 15, elevation: 7 },
+  playerName: { color: '#293B5A', fontSize: 26, fontWeight: '900', textAlign: 'center', marginTop: 17 },
+  playerArtist: { color: '#8493A7', fontSize: 17, fontWeight: '600', textAlign: 'center', marginTop: 6 },
+  waveWrap: { height: 108, flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'center', gap: 4, marginTop: 23 },
+  waveBar: { width: 3, borderRadius: 2 },
+  playerProgress: { height: 4, backgroundColor: '#DEE5ED', borderRadius: 4, marginTop: 5 },
+  playerProgressFill: { height: 4, backgroundColor: C.gold, borderRadius: 4 },
+  playerThumb: { position: 'absolute', top: -5, width: 14, height: 14, borderRadius: 7, backgroundColor: C.gold, marginLeft: -7, borderWidth: 3, borderColor: '#FFFFFF', shadowColor: '#8B98AA', shadowOpacity: .2, shadowRadius: 4, elevation: 2 },
+  playerTimes: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 9 },
+  elapsedTime: { color: C.gold, fontSize: 12, fontWeight: '700' },
+  totalTime: { color: '#293B5A', fontSize: 12, fontWeight: '700' },
+  playerControls: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 8, marginTop: 27 },
+  playerMainControl: { height: 72, width: 72, borderRadius: 36, backgroundColor: C.gold, alignItems: 'center', justifyContent: 'center', shadowColor: C.gold, shadowOpacity: .38, shadowRadius: 16, elevation: 8 },
+  lyricsButton: { alignSelf: 'center', alignItems: 'center', marginTop: 35 },
+  lyricsText: { color: '#008CD1', fontSize: 16, fontWeight: '800', marginTop: 2 },
 }); }
