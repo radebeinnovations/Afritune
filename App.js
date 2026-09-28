@@ -1,78 +1,470 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { FlatList, Image, Linking, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native';
+import React, { useEffect, useMemo, useState } from 'react';
+import {
+  Image,
+  Linking,
+  Platform,
+  Pressable,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+} from 'react-native';
+import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
-const palette = { navy: '#0B1226', cyan: '#55BFE9', blue: '#28A8E0', white: '#FFFFFF', muted: '#9BA4B5', panel: '#111827' };
-const navIcons = { home: require('./assets/icon-home.png'), daily: require('./assets/icon-add.png'), podcasts: require('./assets/icon-podcasts.png'), shows: require('./assets/icon-shows.png'), favourites: require('./assets/icon-list.png') };
-const catalog = [
-  { title: 'Water', artist: 'Tyla', genre: 'South African pop · Official audio', videoId: 'wlmUnWLaeog' },
-  { title: 'PUSH 2 START', artist: 'Tyla', genre: 'Pop · Official audio', videoId: 'TcknaZhnO88' },
-  { title: 'Truth or Dare', artist: 'Tyla', genre: 'South African pop · Official audio', videoId: 'XieVAcU_bH0' },
-  { title: 'Imithandazo', artist: 'Kabza De Small & Mthunzi', genre: 'Amapiano · Official audio', videoId: 'KKIE9i-U8WE' },
-  { title: 'Everybody Hates Reece', artist: 'A-Reece', genre: 'South African hip-hop · Official audio', videoId: 'qbGxoL-0GJI' },
-  { title: 'Come With Me', artist: 'Major League DJz ft. Jorja Smith', genre: 'Amapiano · Official audio', videoId: 'XmXcFKn_MF4' },
-  { title: 'Mnike', artist: 'Tyler ICU & Tumelo.za', genre: 'Amapiano', query: 'Mnike Tyler ICU Tumelo.za official' },
-  { title: 'Khuza Gogo', artist: 'DBN Gogo & Blaqnick', genre: 'Amapiano', query: 'Khuza Gogo DBN Gogo official' },
-  { title: 'Adiwele', artist: 'Young Stunna & Kabza De Small', genre: 'Amapiano', query: 'Adiwele Young Stunna Kabza De Small official' },
-  { title: 'Ke Star', artist: 'Focalistic ft. Vigro Deep', genre: 'Amapiano', query: 'Ke Star Focalistic Vigro Deep official' },
-  { title: 'Tanzania', artist: 'Uncle Waffles', genre: 'Amapiano', query: 'Tanzania Uncle Waffles official' },
-  { title: 'Dalie', artist: 'Kamo Mphela ft. Tyler ICU', genre: 'Amapiano', query: 'Dalie Kamo Mphela Tyler ICU official' },
-  { title: 'Ghanana', artist: 'Makhadzi', genre: 'Venda pop', query: 'Ghanana Makhadzi official' },
-  { title: 'SMA', artist: 'Nasty C ft. Rowlene', genre: 'South African hip-hop', query: 'SMA Nasty C Rowlene official' },
-  { title: 'Paradise', artist: 'A-Reece', genre: 'South African hip-hop', query: 'Paradise A-Reece official' },
-  { title: 'Straata', artist: 'Major League DJz', genre: 'Amapiano', query: 'Straata Major League DJz official' },
-  { title: 'SummerYoMuthi', artist: 'Blaq Diamond', genre: 'Afropop', query: 'SummerYoMuthi Blaq Diamond official' },
-  { title: 'Akanamali', artist: 'Sun-El Musician ft. Samthing Soweto', genre: 'Afro-house', query: 'Akanamali Sun-El Musician Samthing Soweto official' },
-  { title: 'Wish You Were Here', artist: 'Black Coffee ft. Msaki', genre: 'House', query: 'Wish You Were Here Black Coffee Msaki official' },
-  { title: 'Sgudi Snyc', artist: 'De Mthuda & Njelic', genre: 'Amapiano', query: 'Sgudi Snyc De Mthuda Njelic official' },
-  { title: 'eMcimbini', artist: 'Kabza De Small & DJ Maphorisa', genre: 'Amapiano', query: 'eMcimbini Kabza De Small DJ Maphorisa official' },
-].map(track => ({ ...track, art: track.videoId ? 'https://i.ytimg.com/vi/' + track.videoId + '/hqdefault.jpg' : 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=700&q=80' }));
-const art = {
-  welcome: require('./assets/welcome-portrait.png'),
-  daily: 'https://i.ytimg.com/vi/wlmUnWLaeog/maxresdefault.jpg',
-  podcast1: 'https://images.unsplash.com/photo-1478737270239-2f02b77fc618?auto=format&fit=crop&w=500&q=80',
-  podcast2: 'https://images.unsplash.com/photo-1516280440614-37939bbacd81?auto=format&fit=crop&w=500&q=80',
-  shows1: 'https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=700&q=80',
-  shows2: 'https://images.unsplash.com/photo-1514525253161-7a46d19cd819?auto=format&fit=crop&w=700&q=80'
+const C = {
+  blue: '#28A8E0',
+  actionBlue: '#0080FF',
+  ink: '#161616',
+  slate: '#4E5C73',
+  muted: '#79859A',
+  line: '#E7EBF0',
+  paper: '#FFFFFF',
+  soft: '#F2F2F4',
+  sky: '#EAF7FD',
+  gold: '#FFC404',
 };
 
+const source = {
+  welcome:
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuBO0w5QRBleFpE8i0l9UPWGWBS13zwFaTrEd7eBpytnbv4IGjBt5G7__ljkRyqJhR5BNVI1MypQ5E43Ih67_-tQ21kxL2uLIjFEsZnnup6xihBsjpo21-zlKnchi4wMyZTA0Yj7AMILZg50wa_ihl2B6IHcHzWjJI2xrRGUSr85d576IW_9WcE6-MeV91abekMC7bsukTNG5w0AgOccyNXNqbQwte63acNb3WiIyhu162FrwMSpYfx707BT8hzBIdq2gQ',
+  avatar:
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuCNNvFK1OYdQXqzb6LELDTX_bbC3AGjq100-XDjeQIeZDk99JBGAWVzGaltBWOrvif5bqB78-zYCNpFXUEL0L1YYwgq_JfFMOGYDTPPUP1Rxa5ucAjnBCPypQCzIyOfg5IOEYmSDUkJqXVnkDw0n_-Dveq4Tqw56POvGpVs3wMVch0AABA0XiYkV6ri2YmijR8Wb4QOeXJ5nrDUBuOIO3MYQMkN8_tiOn2NHK7PwCSg3pmCZi4NPKIc',
+  homeDaily:
+    'https://lh3.googleusercontent.com/aida/AEtjO1WlJXCiWB46URzDOYS0YO0bS7e2AHBohe0rRL8tD3yrL0VncYA47ZFBsFf-vs5ADcinMklbqz4StVz6t1mp_BkcrkCA65iQeD25LudGnTY0LPhYVmAE2irnpIkbwhLoxGpkqaAbdxUzJKpwR5cPKFtnHPGQZbjh2uCs5fucVQLfU0okizgs-TfJfCouEwNFmJ8l3G1RCEcFDUqm_OX_9VV0_mf9-YQG2cTwHTcTQ5s3QX-YAUUlr0XImDj_A0siiTtekvAglDpRPA',
+  homePodcasts:
+    'https://lh3.googleusercontent.com/aida/AEtjO1WC_ngp8i066aUAH9-MxSevM1lqWO7tsmcyEOMuHtAiPa7_1Ys0l9wEbmTxU0M77o7aFCIYH3nv6V_GGPdKd1WhI8aEd0MhDOh0hyuoekgJ-pVUxkO3jOnXZDwUHsEJDEwmZsnUEjm6UoLWg78LwhUiXezrzVhpAFOrOnyaBKn_Tih9mQRRH48aJFKQ2KbtcxMP17NRb_N2borZzIf_-vyXfbS1QEFSO_pwr6Z87LRh5t3m_sou3Fftt28woZ-AvHoJ2OT_59J_8g',
+  homeShows:
+    'https://lh3.googleusercontent.com/aida/AEtjO1Vwvg3esJB4xuQXyLwBEIND-st4QCfSTRtxpxL9WhGGu7aGZMLFs9ofL6DL8xew6yWDd9Rx55SiSMG3EdRapc-cwLzQ--_MQOxWAg3zl2Q3khR5IwKrIg6xjXl-fuasXg74tl2G3nokhh92B0mQGySNqGYUSXJmUdBAm_bCLXpB3R6RHL3QnkwAX_s8NgO68DCKIRX0QmuyqK5sOUtyz6-ajc9iaoCMnjvzcSrzTRzPLMZbqgI4rw6Nq8gtBI4gk6rckGfAXQg4mQ',
+  homeFavourite: require('./assets/stitch/card-01.png'),
+  daily:
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuBxVkgHumu7Zakpb2Wz832nifeSOqruxUYA807Wy9jXuH1kAlE79c8eY9MwTXoFmtVtRW47s6FiyB1OjXUEM_WCRnIlrdMLWwAdTxwBQ0AwR71RHKs9b-L5yrq4K0C0eR5ztVEpxxUXIRUiMcuyteE3voFMxPwxtFNVDJkyljZvZ0t2qZRCZEj5RthhfAtjzNvYcB34tXhWYmJfTm4xHheiAf2AfLOQCd4cOClZwzocMkIf4Hju_Ojb',
+  podcasts: [
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuB0jfFmpsObtFabtc34bj8GJISY0B2ca0ZGH1sRvoqAodr2qMx-R_N7_m1duFn_QeYzSlPHTyk66VKHvk66Z6RghuGBdOQZ8lgp3268eeOqKYXDJ5crtRxODV0QREOFAOfXjXJm7-r8XjfLgZKwMUL3rxAFfn6qFwR2OIDXQ_ErF80Lqm7Ny2ndsL7DatKzjqF_Acjt70FrLvSTZmks_He_oC1cWBTjJo_e2U2L4DkznleDx_1f9zli',
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuA4bnKYj5UpzhJ9qlNEhM-rxo-EkFw8N519fzsIE8M9Qmu3hQ5tosCuMQnfoYQqIk_fDvdAs9xs0yhy-lLrNADsr1HLfpesP8bQg5XNaE-bBLetVGpp1jxrrHOgW60UBOl-4vmxUSMnsVDvwtGrKxlu0K0r2hSbNZcUBbEk5sWIHY8T8Iga3Rios_GTqmg_t0Qu4UUmDakXQ2ddPYberMKS_uHid6Ti_SytWol8t40AT0hw8lJQm8Ec',
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuCUgsziwQ9-XQ3M7XfDT4utT1DDmNc-NEaJXdDHMDmL6ppwR8FjZwSAlySKM_jUN21XNQNu3dLSw5B6oCVGU2UsD5NfGfM9P_1HSmMnXrUVwmxjFHWyfTKeLvPOgJqb4paHXnXv3zC4UAXANA-z_H12PpskkNNGvkw1Rg3OrKYg0yAS3RSw2SEUoyB_Vpb2lsB1AIdYIllSpqT3Qg_pyWtpwWm_ZWzBD7fqligf-z1tkQ2RNg_q_I0O',
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuAIoCYvHVQfNLEXXO9rzHbh052Vhw0pMgmJ91mSr8ok-ZeQTsveHedRCFtcTBoP2Mxb5Oy7cw4naYHtjnxNGkNkVLHC9svvo6pYkZWu7A3Mw6g8dnsjQ9BUKc_ZLYE1iZCyzDVVXK3jQnpvMfkcgX2Lij5mjOk7yuTdCNCUQp7VtlM_hnna9x4wxqTHoWUCbXwyg98-oBkC7osoQI-nF5vlwDeVwZk4cuc9JQm8kVVvh3RgHuaeU_c3',
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuDhmfMOex8iVD-qiI6dXJx9qgHm1buwS5_-lz4L00MRyVK6o-Ua7V-cI56cNOWLwYtwcir4pFWAZTw0FfmRDpOHsvnJHDi2sQkX80cw83p0mJEZgEGN1zWIt-ZQqUw0dSbortL7bZ5uU5OIxAKQgHG-Ya13JJgXSLtTi930fOEGzLqhikn8jlDYGx4YoaNpZ6hf5HCzpNQzVTPSsDVtX5hY0OJid1EBNzSxluIJZx5OkBh-qYCuec3e',
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuBckgi82pc02DTdVDS4h4Kk0af4ti6XnB3XKt9cS6K_-S5dYWLVpqup-aKl37jVo8GvyP4lnQhZJzljaHgKgqatK608jT_B92GK4m3dkb3mCjrmPghEDrbACtnYx2nfuFUOK578_KznaPXZP8Ch5Y1w6XUOC3q-79XsvrhGw5n3CV6lAq7RxvkUPeWzcl21GhUIb17O2E5n9SQ8DwTy4_EqKLKWDyjW2fkkfKXnlnWXjRkvSyhmTywE',
+  ],
+  shows: [
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuB61cdl1yLu0LofBvAcsUiptEaN2xwpXnfmKX6xhCBwRRkR-lqdFRAhS6fNuzN_lJZglbXN83P8ID2P9GugMTWPkjwQn5edDmTjohISR92FIC_Nx3kcWDZJIQUpIwi7pB1JFbWNpcIjPekRY4r_FA1NqzFfhkIVvsFzRafRcNky1kWNSwJg_oU2xODBW3-yhecSBFmUdFFVU0HwJBbzB4Qac1I1dZFl93mNAiVgHyflSgGOzGal3oSs',
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuCI6zFeKCIfljC-K-c7CUxYWm4wDdCHHv5UDE8hqAzJYKTlDMAdjoXWJuVOZXwu_034RuSvn1RVu-UWAHNrvU0FmQrDTfePwPz6MCxtBcpRAYWUiMtjkEBTzCLi_35I9py_9FqScZLdk5rVnr1-yHFWfFXAOXWgOyvIHGI_y_SdqNu-MgdHGm6hxzdgdyUte9ZaNDRa-a2-ud1rKyPeXICtCytRxwbQqmpOURtNSweGAZr10sMnzBUd',
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuCQgyRUD-L4mm56W2Kl337MYOQ_u-moXf0OoPBup722kLm3Q6xv7jpqV0zA2bnU_GarXrJWwd6zQhCQPxNnpJ-jE63HVijZoTVRFdG-JmDsNg9Pwe8hnSDiMTHKPzLNGaV5I_IGpmJkbVVoLBceXVN91anfazlcenkSvRd8VDmKLeWiSnG7AzhHWJrTiiZQT5BoxBsuxFsrF-byS-tIbX0bh8V7ALuo7saNT58ETw1e9NY32cCIDrxd',
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuA1pSfDRynapzqqVTzU6VoFIlpZtgJnuTRWvcQxYeTJMFViMVBEO_O5WfdOaWoP8GLkIm56HInYKN_zeGVbKQ-Jx-pb__97iy9SxHlCydnXA1LtgHigI65M73Km2GcxsE5hwPiXsBt3ZKY4h7-BWWlvCUZOrYLCOh6Qk7gDOFpYvEW_nvtznQGZbqMtvARRJUI3kFVuByFms8nE_v0BqtNq19Nak6p_8mr9ppeEWxYxSK7wYyDWMIi2',
+    'https://lh3.googleusercontent.com/aida-public/AB6AXuBJ7C7p5Y-FQip8HPemiCRj60Sr7PKDWAutHhwqK_QcsvaOTZyVkwZn4M9iQZcJpQRwS0Ye2JJd_0wK53vNfK0wZZ3wGh0RKvW579q89VgqJO4OzGyI43w4uhW_MNjSl42v00PO30hk4M5AVvq6jMrTvUBgFfNYbqSmtwMQxQmqj2grEBPw5RlzOrhKwZU4KgO29p6i5Ywyj-zHt2knZcMGlUJGDxw1J6fC2N3ns_YnQeizQVS1k_1g',
+  ],
+};
+
+const tracks = [
+  { title: 'SMA', artist: 'Nasty C feat. Rowlene', art: source.daily, videoId: '3V8wZItHf3A' },
+  { title: 'Water', artist: 'Tyla', art: source.homeDaily, videoId: 'XoiOOiuH8iI' },
+  { title: 'Imithandazo', artist: 'Kabza De Small & Mthunzi', art: source.daily, videoId: 'KKIE9i-U8WE' },
+  { title: 'Mnike', artist: 'Tyler ICU & Tumelo.za', art: source.homeFavourite, videoId: 'HcC2t2t2Bpg' },
+];
+
+const podcastCards = [
+  ['Podcast and Chill with MacG', "South Africa's #1 Talk Show", source.podcasts[0]],
+  ['What Now? Trevor Noah', 'Candid Conversations', source.podcasts[1]],
+  ['The Penuel Show', 'Critical Thinking & Culture', source.podcasts[2]],
+  ['Wisdom & Wellness', 'Mpoomy · Growth, Healing & Spirit', source.podcasts[3]],
+  ['Popcorn & Cheese', 'Robot Boii · Entertainment & Banter', source.podcasts[4]],
+  ['African History Extra', 'Untold Continental Stories', source.podcasts[5]],
+];
+
+const shows = [
+  ['SEASON 4 OUT NOW', 'Blood & Water', 'Mystery · High School Drama · Cape Town', source.shows[0]],
+  ['NEW EPISODE DAILY', 'Empini', 'Action Thriller · Private Security Saga', source.shows[1]],
+  ['CRIME THRILLER', 'Red Ink', 'Investigative Suspense · Novel Adaptation', source.shows[2]],
+  ['PREVIEW · PREMIERES FRIDAY', 'Love Never Lies: South Africa', 'Reality · Romance · Lie Detector Series', source.shows[3]],
+  ['TOP 10 · FAN FAVOURITE', 'Redemption', 'Telenovela · Family Dynasty Drama', source.shows[4]],
+];
+
+// This screen follows the Stitch "All Time Favourites" composition.  Keep the
+// library feed separate from the latest-shows feed so navigating between the
+// two never renders the same cards in a different order.
+const favouriteShows = [
+  ['CRIME THRILLER', 'Red Ink', 'Investigative Suspense · Novel Adaptation', source.shows[2]],
+  ['WATCHED DAILY', 'Love Never Lies: South Africa', 'Reality · Romance · Lie Detector Series', source.shows[3]],
+  ['RETURNING SOON', 'Redemption', 'Telenovela · Family Dynasty Drama', source.shows[4]],
+];
+
 export default function App() {
-  const [screen, setScreen] = useState('signup');
-  const verifiedCatalog = useMemo(() => catalog.filter(track => track.videoId), []);
-  const [tracks, setTracks] = useState(verifiedCatalog);
-  const [active, setActive] = useState(verifiedCatalog[0]);
-  const [playerOpen, setPlayerOpen] = useState(false);
-  const openTrack = track => { setActive(track); setPlayerOpen(true); };
-  const visibleTracks = useMemo(() => tracks, [tracks]);
-  return <SafeAreaView style={s.safe}><StatusBar style="light" />
-    {screen === 'signup' && <AuthScreen title="Create An Account" button="Sign Up" check="I agree to the terms and conditions" onPress={() => setScreen('welcome')} />}
-    {screen === 'welcome' && <Intro onPress={() => setScreen('signin')} />}
-    {screen === 'signin' && <AuthScreen title="Sign In To Your Account" button="Sign In" check="Remember Me" onPress={() => setScreen('home')} />}
-    {['home', 'daily', 'podcasts', 'shows', 'favourites'].includes(screen) && <Shell screen={screen} setScreen={setScreen}>
-      {screen === 'home' && <Home setScreen={setScreen} />}
-      {screen === 'daily' && <Daily tracks={visibleTracks} openTrack={openTrack} />}
-      {screen === 'podcasts' && <Podcasts />}
-      {screen === 'shows' && <Shows />}
-      {screen === 'favourites' && <Favourites />}
-    </Shell>}
-    {playerOpen && <Player track={active} close={() => setPlayerOpen(false)} />}
-  </SafeAreaView>;
+  const [screen, setScreen] = useState('welcome');
+  const [activeTrack, setActiveTrack] = useState(null);
+
+  const openTrack = (track) => setActiveTrack(track);
+  const closePlayer = () => setActiveTrack(null);
+
+  return (
+    <SafeAreaView style={styles.app}>
+      <StatusBar style="dark" />
+      {screen === 'welcome' && <Welcome onContinue={() => setScreen('signup')} onSignIn={() => setScreen('signin')} />}
+      {screen === 'signup' && <AuthScreen mode="signup" onComplete={() => setScreen('home')} onSwitch={() => setScreen('signin')} />}
+      {screen === 'signin' && <AuthScreen mode="signin" onComplete={() => setScreen('home')} onSwitch={() => setScreen('signup')} onQuickLogin={() => setScreen('quickLogin')} />}
+      {screen === 'quickLogin' && <QuickLogin onBack={() => setScreen('signin')} onComplete={() => setScreen('home')} />}
+      {['home', 'daily', 'podcasts', 'shows', 'favourites'].includes(screen) && (
+        <AppShell screen={screen} onNavigate={setScreen}>
+          {screen === 'home' && <Home onNavigate={setScreen} />}
+          {screen === 'daily' && <DailyMusic onBack={() => setScreen('home')} onOpenTrack={openTrack} />}
+          {screen === 'podcasts' && <Podcasts onBack={() => setScreen('home')} />}
+          {screen === 'shows' && <Shows onBack={() => setScreen('home')} />}
+          {screen === 'favourites' && <Favourites onBack={() => setScreen('home')} />}
+        </AppShell>
+      )}
+      {activeTrack && <Player track={activeTrack} onClose={closePlayer} />}
+    </SafeAreaView>
+  );
 }
-function AuthScreen({ title, button, check, onPress }) { return <View style={s.auth}><Brand compact /><Text style={s.authTitle}><Text style={s.cyan}>{title.split(' ')[0]} </Text>{title.slice(title.indexOf(' ') + 1)}</Text><Field label="Email Address" placeholder="Email Address" /><Field label="Mobile Number" placeholder="Mobile Number" /><Field label="Password" placeholder="Password" secure /><Text style={s.check}>▣  {check}</Text><Pressable style={s.authButton} onPress={onPress}><Text style={s.authButtonText}>{button}</Text></Pressable></View>; }
-function Field({ label, placeholder, secure }) { return <View style={s.field}><Text style={s.fieldLabel}>{label}</Text><TextInput placeholder={placeholder} placeholderTextColor="#788397" secureTextEntry={secure} style={s.input} /></View>; }
-function Intro({ onPress }) { return <View style={{ flex: 1, backgroundColor: '#000' }}><Image source={art.welcome} style={{ width: '100%', height: '70%', resizeMode: 'cover' }} /><View style={{ flex: 1, backgroundColor: '#FFFFFF', marginTop: -44, borderTopLeftRadius: 42, borderTopRightRadius: 42, paddingHorizontal: 42, paddingTop: 58 }}><Text style={{ color: palette.navy, fontSize: 48, lineHeight: 58, fontWeight: '800', letterSpacing: -1.4 }}>From Africa,{`\n`}For the World</Text><Pressable style={{ height: 82, borderRadius: 44, backgroundColor: '#1688F7', alignItems: 'center', justifyContent: 'center', marginTop: 'auto', marginBottom: 28 }} onPress={onPress}><Text style={{ color: '#FFFFFF', fontSize: 22, fontWeight: '900', letterSpacing: .5 }}>CLICK  →</Text></Pressable></View></View>; }
-function Shell({ children, screen, setScreen }) { return <View style={[s.shell, { backgroundColor: '#151515', paddingHorizontal: 0 }]}><View style={{ paddingHorizontal: 22 }}><Header /></View><ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={[s.content, { paddingHorizontal: 22 }]}>{children}</ScrollView><Nav screen={screen} setScreen={setScreen} /></View>; }
-function Brand({ compact = false }) { const size = compact ? 42 : 64; return <View style={[s.brand, { height: compact ? 48 : 88, marginBottom: compact ? 12 : 16 }]}><Image source={art.welcome} style={{ position: 'absolute', left: 0, width: size, height: size, borderRadius: size / 2 }} /><Text style={[s.brandMic, { fontSize: compact ? 19 : 31 }]} >♩</Text><Text style={[s.brandText, { fontSize: compact ? 20 : 34, letterSpacing: compact ? 1 : 1.8 }]}>AFRITUNE</Text><Text style={[s.gear, { fontSize: compact ? 22 : 34 }]}>⚙</Text></View>; }
-function Header() { return <><Brand /><View style={{ height: 56, borderRadius: 30, backgroundColor: '#F2F2F2', flexDirection: 'row', alignItems: 'center', paddingLeft: 22, marginBottom: 8 }}><TextInput placeholder="Search..." placeholderTextColor="#4E586A" style={{ flex: 1, fontSize: 18, color: palette.navy }} /><Text style={{ fontSize: 38, color: '#393939', paddingRight: 14, marginTop: -5 }}>⌕</Text></View></>; }
-function Home({ setScreen }) { return <View style={{ paddingTop: 28 }}><Tile title="Daily Music &\nPlaylists" image={art.daily} onPress={() => setScreen('daily')} /><Tile title="Podcasts &\nEpisodes" image={art.podcast1} onPress={() => setScreen('podcasts')} /><Tile title="Latest Shows &\nSeries" image={art.shows1} onPress={() => setScreen('shows')} /><Tile title="All Time\nFavourite" image={art.shows2} onPress={() => setScreen('favourites')} /></View>; }
-function Tile({ title, image, onPress }) { return <Pressable style={{ height: 294, borderRadius: 24, overflow: 'hidden', marginBottom: 28, backgroundColor: '#232323' }} onPress={onPress}><Image source={{ uri: image }} style={{ ...StyleSheet.absoluteFillObject, width: undefined, height: undefined }} /><View style={{ ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(0,0,0,.28)' }} /><Text style={{ color: '#FFFFFF', fontWeight: '900', fontSize: 32, lineHeight: 37, width: '72%', padding: 30, textShadowColor: 'rgba(0,0,0,.35)', textShadowRadius: 7 }}>{title}</Text></Pressable>; }
-function Daily({ tracks, openTrack }) { return <><Text style={s.pageTitle}>Daily Music & Playlists</Text><View style={s.albumRow}><Image source={{ uri: tracks[0].art }} style={s.sideAlbum} /><View><Image source={{ uri: tracks[1].art }} style={s.mainAlbum} /><Text style={s.songName}>Leftie (Dlala Ngcobo)</Text><Text style={s.songArtist}>Nasty C, Blxckie</Text></View><Image source={{ uri: tracks[2].art }} style={s.sideAlbum} /></View><View style={s.transport}><Text>↻</Text><Text>▮◀</Text><Text style={s.playRound}>▶</Text><Text>▶▮</Text><Text>♬</Text></View><Text style={s.release}>Release Countdown{`\n`}<Text style={s.free}>Free{`\n`}2025 - Upcoming Release</Text></Text><Text style={s.listHeader}>Amapiano & Afrobeats</Text><FlatList data={tracks} scrollEnabled={false} keyExtractor={x => x.title} renderItem={({ item }) => <Pressable style={s.track} onPress={() => openTrack(item)}><Image source={{ uri: item.art }} style={s.trackArt} /><View style={{ flex: 1 }}><Text style={s.trackTitle}>{item.title}</Text><Text style={s.trackMeta}>{item.artist}</Text></View><Text style={s.cyan}>▶</Text></Pressable>} /></>; }
-function Podcasts() { return <View style={{ paddingTop: 18 }}><Text style={{ color: '#FFFFFF', fontWeight: '900', fontSize: 31, lineHeight: 37, marginBottom: 24 }}>Podcasts and Episodes</Text><View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between' }}><PodcastTile title="Mindset" image={art.podcast1} /><PodcastTile title="Self-Love" image={art.podcast2} /><PodcastTile title="Storytime" image={art.daily} /><PodcastTile title="Book Review" image={art.shows2} /></View></View>; }
-function PodcastTile({ title, image }) { return <View style={{ width: '47%', marginBottom: 28 }}><Image source={{ uri: image }} style={{ width: '100%', aspectRatio: 1, borderRadius: 18, backgroundColor: '#252525' }} /><Text style={{ color: '#FFFFFF', fontWeight: '900', fontSize: 21, lineHeight: 26, marginTop: 10 }}>{title}</Text></View>; }
-function Shows() { return <><Text style={s.pageTitle}>Shows and Series</Text><Text style={s.subhead}>Your Daily picks</Text><Card title="EMPINI" image={art.shows1} wide /><Text style={s.subhead}>Top picks of the week</Text><Card title="The Silent Hour" image={art.shows2} wide /></>; }
-function Favourites() { return <><Text style={s.pageTitle}>All Time Favourites</Text><Text style={s.subhead}>Watched Daily</Text><Card title="RED INK" image={art.shows1} wide /><Text style={s.subhead}>Returning Soon</Text><Card title="REDEMPTION" image={art.shows2} wide /></>; }
-function Card({ title, image, wide }) { return <View style={[s.card, wide && s.wide]}><Image source={{ uri: image }} style={s.cardImage} /><Text style={s.cardText}>{title}</Text></View>; }
-function Nav({ screen, setScreen }) { const entries = [['daily','Daily music'],['podcasts','Podcasts'],['home','Home'],['shows','Shows'],['favourites','Favourites']]; return <View style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: 102, backgroundColor: '#171717', borderTopWidth: 0, flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', paddingHorizontal: 18 }}>{entries.map(([id, label]) => <Pressable accessibilityRole="button" accessibilityLabel={label} key={id} onPress={() => setScreen(id)} style={{ alignItems: 'center', justifyContent: 'center', width: '20%', height: '100%' }}><Image source={navIcons[id]} style={{ width: id === 'home' ? 42 : 36, height: id === 'home' ? 42 : 36, resizeMode: 'contain', tintColor: screen === id ? palette.cyan : '#FFFFFF' }} /></Pressable>)}</View>; }
-function Player({ track, close }) { const playerRef = useRef(null); const [playing, setPlaying] = useState(false); const [position, setPosition] = useState(0); const [duration, setDuration] = useState(0); useEffect(() => { if (Platform.OS !== 'web' || !track.videoId) return; const mount = () => { if (!window.YT || !window.YT.Player) return; playerRef.current = new window.YT.Player('afritune-youtube-player', { videoId: track.videoId, playerVars: { autoplay: 0, controls: 1, rel: 0, playsinline: 1, origin: window.location.origin }, events: { onReady: event => { playerRef.current = event.target; setDuration(event.target.getDuration() || 0); }, onStateChange: event => setPlaying(event.data === window.YT.PlayerState.PLAYING) } }); }; const existing = document.getElementById('afritune-youtube-api'); if (window.YT && window.YT.Player) mount(); else if (existing) existing.addEventListener('load', mount, { once: true }); else { const script = document.createElement('script'); script.id = 'afritune-youtube-api'; script.src = 'https://www.youtube.com/iframe_api'; script.addEventListener('load', () => { window.onYouTubeIframeAPIReady = mount; }); document.head.appendChild(script); window.onYouTubeIframeAPIReady = mount; } return () => { if (playerRef.current && playerRef.current.destroy) playerRef.current.destroy(); playerRef.current = null; }; }, [track.videoId]); useEffect(() => { const interval = setInterval(() => { const player = playerRef.current; if (player && player.getCurrentTime) { setPosition(player.getCurrentTime() || 0); setDuration(player.getDuration() || 0); } }, 300); return () => clearInterval(interval); }, []); const toggle = () => { const player = playerRef.current; if (!player) return; if (player.getPlayerState && player.getPlayerState() === window.YT.PlayerState.PLAYING) player.pauseVideo(); else player.playVideo(); }; const seek = seconds => { const player = playerRef.current; if (!player || !player.seekTo) return; const current = player.getCurrentTime ? player.getCurrentTime() : position; const total = player.getDuration ? player.getDuration() : duration; player.seekTo(Math.max(0, Math.min(total || Infinity, current + seconds)), true); }; const pct = duration ? Math.min(100, position / duration * 100) : 0; return <View style={s.player}><Pressable onPress={close}><Text style={s.close}>⌄</Text></Pressable><Text style={s.now}>NOW PLAYING</Text><Image source={{ uri: track.art }} style={{ width: 82, height: 82, borderRadius: 9, alignSelf: 'center', marginTop: 6 }} />{Platform.OS === 'web' ? React.createElement('div', { id: 'afritune-youtube-player', style: { width: '100%', aspectRatio: '16 / 9', borderRadius: 12, overflow: 'hidden', marginTop: 16 } }) : <Image source={{ uri: track.art }} style={s.playerArt} />}<Text style={s.playerTitle}>{track.title}</Text><Text style={s.playerArtist}>{track.artist}</Text><View style={{ height: 4, backgroundColor: '#5A667B', borderRadius: 3, marginTop: 22 }}><View style={{ width: pct + '%', height: 4, backgroundColor: palette.cyan, borderRadius: 3 }} /></View><View style={{ flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', marginTop: 22 }}><Pressable onPress={() => { const player = playerRef.current; if (player && player.seekTo) player.seekTo(0, true); }}><Text style={{ color: palette.cyan, fontSize: 26 }}>↻</Text></Pressable><Pressable onPress={() => seek(-10)}><Text style={{ color: palette.cyan, fontSize: 24 }}>◀◀</Text></Pressable><Pressable onPress={toggle} style={{ width: 62, height: 62, backgroundColor: '#FFFFFF', borderRadius: 31, justifyContent: 'center', alignItems: 'center' }}><Text style={{ color: palette.navy, fontSize: 23 }}>{playing ? 'Ⅱ' : '▶'}</Text></Pressable><Pressable onPress={() => seek(10)}><Text style={{ color: palette.cyan, fontSize: 24 }}>▶▶</Text></Pressable><Text style={{ color: palette.cyan, fontSize: 26 }}>♬</Text></View><Text style={s.powered}>Powered by YouTube · rewind and fast-forward move 10 seconds</Text></View>; }
-const s = StyleSheet.create({ safe:{flex:1,backgroundColor:palette.navy},shell:{flex:1,paddingHorizontal:16},content:{paddingBottom:100},auth:{flex:1,backgroundColor:palette.navy,paddingTop:35,paddingHorizontal:18},brand:{height:48,flexDirection:'row',alignItems:'center',justifyContent:'center',gap:7,marginBottom:12},brandAvatar:{position:'absolute',left:0,color:palette.cyan,fontSize:25},brandMic:{color:palette.cyan,fontSize:19},brandText:{color:palette.cyan,fontWeight:'900',fontSize:20,letterSpacing:1},gear:{position:'absolute',right:0,color:palette.cyan,fontSize:22},authTitle:{fontSize:19,color:'white',fontWeight:'800',marginTop:55,marginBottom:38},cyan:{color:palette.cyan},field:{marginBottom:13},fieldLabel:{color:'white',fontSize:10,fontWeight:'700',marginBottom:6},input:{height:38,borderColor:palette.cyan,borderWidth:1,borderRadius:4,paddingHorizontal:11,color:'white',fontSize:12},check:{color:'white',fontSize:10,marginTop:1},authButton:{backgroundColor:palette.cyan,height:80,borderTopLeftRadius:90,borderTopRightRadius:90,marginTop:'auto',marginHorizontal:-18,alignItems:'center',paddingTop:21},authButtonText:{fontWeight:'800',color:palette.navy},intro:{flex:1,backgroundColor:palette.navy},introImage:{height:'63%',width:'100%',resizeMode:'cover'},introCard:{backgroundColor:'white',borderTopLeftRadius:25,borderTopRightRadius:25,marginTop:-25,padding:30,flex:1},introTitle:{fontSize:27,fontWeight:'800',color:palette.navy,lineHeight:35},click:{backgroundColor:palette.blue,borderRadius:24,height:42,alignItems:'center',justifyContent:'center',marginTop:24},clickText:{color:'white',fontWeight:'800'},search:{height:31,borderRadius:16,backgroundColor:'white',flexDirection:'row',alignItems:'center',paddingLeft:13},searchInput:{flex:1,fontSize:10,color:palette.navy},searchIcon:{fontSize:23,color:'#424242',paddingRight:9},connect:{color:palette.cyan,textAlign:'right',fontSize:10,marginTop:5,marginBottom:6},premium:{color:'#FFD166',fontSize:11,lineHeight:16,marginBottom:10},tile:{height:81,borderRadius:9,overflow:'hidden',marginBottom:12,backgroundColor:'#15213A'},tileImage:{...StyleSheet.absoluteFillObject},tileShade:{...StyleSheet.absoluteFillObject,backgroundColor:'rgba(0,0,0,.35)'},tileTitle:{color:'white',fontWeight:'900',fontSize:15,width:145,padding:12},pageTitle:{color:'white',fontWeight:'900',fontSize:20,marginTop:10,marginBottom:14},albumRow:{flexDirection:'row',justifyContent:'center',alignItems:'center',gap:13},mainAlbum:{width:198,height:198,borderRadius:10},sideAlbum:{width:74,height:155,borderRadius:8,opacity:.45},songName:{color:'white',fontWeight:'800',fontSize:14,textAlign:'center',marginTop:10},songArtist:{color:palette.muted,fontWeight:'700',fontSize:11,textAlign:'center'},transport:{flexDirection:'row',justifyContent:'space-around',alignItems:'center',marginVertical:19},playRound:{backgroundColor:'white',color:palette.navy,padding:11,borderRadius:24,overflow:'hidden'},release:{color:'#536072',fontSize:12,textAlign:'center',marginTop:15},free:{color:'#E5C24E',fontWeight:'800',fontSize:16},listHeader:{color:'white',fontWeight:'800',fontSize:15,marginTop:28,marginBottom:8},track:{height:58,flexDirection:'row',alignItems:'center',gap:10,borderBottomWidth:1,borderColor:'#263148'},trackArt:{width:42,height:42,borderRadius:5},trackTitle:{color:'white',fontWeight:'800'},trackMeta:{color:palette.muted,fontSize:10,marginTop:3},grid:{flexDirection:'row',flexWrap:'wrap',justifyContent:'space-between'},card:{width:'47%',marginBottom:18},wide:{width:'100%'},cardImage:{width:'100%',height:120,borderRadius:8,backgroundColor:'#1D2A40'},cardText:{color:'white',fontWeight:'800',fontSize:13,marginTop:5},subhead:{color:palette.cyan,fontWeight:'800',fontSize:13,marginBottom:7,marginTop:8},nav:{position:'absolute',bottom:0,left:0,right:0,height:66,backgroundColor:'#0A1020',borderTopWidth:1,borderColor:'#23304A',flexDirection:'row',justifyContent:'space-around',paddingTop:7},navItem:{alignItems:'center',width:'20%'},navImage:{width:25,height:25,resizeMode:'contain'},navLabel:{fontSize:8,color:'white',marginTop:4},player:{...StyleSheet.absoluteFillObject,zIndex:50,backgroundColor:palette.navy,padding:22},close:{color:'white',fontSize:30},now:{color:palette.muted,fontSize:12,fontWeight:'800',marginTop:15},playerArt:{width:'100%',aspectRatio:.86,borderRadius:12,marginTop:12},playerTitle:{color:'white',fontSize:26,fontWeight:'900',textAlign:'center',marginTop:16},playerArtist:{color:palette.muted,fontSize:16,fontWeight:'700',textAlign:'center',marginTop:6},bar:{height:4,backgroundColor:'#556070',borderRadius:4,marginTop:28},fill:{height:4,backgroundColor:palette.cyan,borderRadius:4},controlRow:{flexDirection:'row',justifyContent:'space-between',alignItems:'center',marginTop:23},control:{color:palette.cyan,fontSize:25,fontWeight:'800'},bigPlay:{width:58,height:58,borderRadius:30,backgroundColor:'white',alignItems:'center',justifyContent:'center'},powered:{color:palette.muted,fontSize:10,textAlign:'center',marginTop:24}
+
+function Welcome({ onContinue, onSignIn }) {
+  return (
+    <View style={styles.welcome}>
+      <Image source={{ uri: source.welcome }} style={styles.welcomeImage} />
+      <View style={styles.welcomeSheet}>
+        <Text style={styles.welcomeTitle}>From Africa,{`\n`}For the World</Text>
+        <Pressable accessibilityRole="button" style={styles.primaryPill} onPress={onContinue}>
+          <Text style={styles.primaryPillText}>CLICK</Text>
+          <Ionicons name="arrow-forward-circle-outline" size={23} color={C.paper} />
+        </Pressable>
+        <Pressable accessibilityRole="button" onPress={onSignIn} hitSlop={12}>
+          <Text style={styles.alreadyMember}>Already have an account? <Text style={styles.blueText}>Sign in</Text></Text>
+        </Pressable>
+      </View>
+    </View>
+  );
+}
+
+function AuthScreen({ mode, onComplete, onSwitch, onQuickLogin }) {
+  const isSignup = mode === 'signup';
+  const [email, setEmail] = useState('');
+  const [mobile, setMobile] = useState('');
+  const [password, setPassword] = useState('');
+  const [visible, setVisible] = useState(false);
+  const [notice, setNotice] = useState('');
+
+  const submit = () => {
+    if (!email.trim().includes('@')) return setNotice('Enter a valid email address.');
+    if (isSignup && mobile.replace(/\D/g, '').length < 9) return setNotice('Enter a valid mobile number.');
+    if (password.length < 6) return setNotice('Password must contain at least 6 characters.');
+    onComplete();
+  };
+
+  return (
+    <View style={styles.authScreen}>
+      {isSignup ? <View style={styles.authDome} /> : null}
+      <View style={[styles.authTop, !isSignup && styles.signinTop]}>
+        {!isSignup && <Pressable accessibilityRole="button" onPress={onSwitch} style={styles.backButton}><Ionicons name="arrow-back" size={26} color={C.ink} /></Pressable>}
+        <Brand dark />
+      </View>
+      <ScrollView contentContainerStyle={styles.authScroll} keyboardShouldPersistTaps="handled" showsVerticalScrollIndicator={false}>
+        <Text style={styles.authTitle}>{isSignup ? <><Text style={styles.blueText}>Create</Text> An Account</> : <>Sign In To Your Account</>}</Text>
+        <Text style={styles.authSubtitle}>{isSignup ? 'Your music, your people, your sound.' : 'Welcome back. Your sound is waiting.'}</Text>
+        <InputField label="Email Address" placeholder="Email Address" value={email} onChangeText={setEmail} keyboardType="email-address" autoCapitalize="none" icon="mail-outline" />
+        <InputField label="Mobile Number" placeholder="Mobile Number" value={mobile} onChangeText={setMobile} keyboardType="phone-pad" icon="call-outline" optional={!isSignup} />
+        <InputField label="Password" placeholder="Password" value={password} onChangeText={setPassword} secureTextEntry={!visible} icon="lock-closed-outline" trailing={visible ? 'eye-outline' : 'eye-off-outline'} onTrailing={() => setVisible(!visible)} />
+        <View style={styles.checkRow}>
+          <View style={styles.checkBox}><Ionicons name="checkmark" size={13} color={C.paper} /></View>
+          <Text style={styles.checkLabel}>{isSignup ? 'I agree to the terms and conditions' : 'Remember me'}</Text>
+          {!isSignup && <Text style={styles.helpText}>Need Help?</Text>}
+        </View>
+        {notice ? <Text accessibilityLiveRegion="polite" style={styles.formNotice}>{notice}</Text> : null}
+        {!isSignup ? <Pressable onPress={onQuickLogin} style={styles.quickLink}><Text style={styles.quickLinkText}>Use Google, Apple or phone instead</Text></Pressable> : null}
+      </ScrollView>
+      <View style={[styles.authFooter, isSignup && styles.signupFooter]}>
+        <Pressable accessibilityRole="button" style={[styles.authButton, isSignup && styles.signupButton]} onPress={submit}>
+          <Text style={styles.authButtonText}>{isSignup ? 'Sign Up' : 'Sign In'}</Text>
+          {!isSignup && <Ionicons name="arrow-forward" size={22} color={C.paper} />}
+        </Pressable>
+        {!isSignup ? <Pressable onPress={onSwitch}><Text style={styles.switchAuth}>Don't have an account? <Text style={styles.blueText}>Sign Up</Text></Text></Pressable> : null}
+      </View>
+    </View>
+  );
+}
+
+function InputField({ label, optional, icon, trailing, onTrailing, ...props }) {
+  return (
+    <View style={styles.inputGroup}>
+      <Text style={styles.fieldLabel}>{label}{optional ? <Text style={styles.optional}> · Optional</Text> : null}</Text>
+      <View style={styles.inputBox}>
+        <Ionicons name={icon} size={19} color={C.slate} />
+        <TextInput {...props} placeholderTextColor="#9AA5B5" style={styles.input} accessibilityLabel={label} />
+        {trailing ? <Pressable onPress={onTrailing} accessibilityLabel="Show or hide password" hitSlop={10}><Ionicons name={trailing} size={20} color={C.slate} /></Pressable> : null}
+      </View>
+    </View>
+  );
+}
+
+function QuickLogin({ onBack, onComplete }) {
+  return (
+    <View style={styles.quickScreen}>
+      <View style={styles.quickHeader}><Pressable onPress={onBack}><Ionicons name="arrow-back" size={26} color={C.ink} /></Pressable><Brand dark /></View>
+      <ScrollView contentContainerStyle={styles.quickContent} showsVerticalScrollIndicator={false}>
+        <View style={styles.livePill}><Text style={styles.livePillText}>🎶 LISTENING PARTY LIVE · 2.4k tuned in</Text></View>
+        <Image source={{ uri: source.homeDaily }} style={styles.quickHero} />
+        <Text style={styles.quickOverline}>🔥 AMAPIANO WAVE SA</Text>
+        <Text style={styles.quickTitle}>Welcome Back</Text>
+        <Text style={styles.quickCopy}>Join listening parties, stream live mixes, and vibe with friends.</Text>
+        <SocialButton icon="logo-google" label="Continue with Google" onPress={onComplete} />
+        <SocialButton icon="logo-apple" label="Continue with Apple" onPress={onComplete} />
+        <SocialButton icon="chatbubble-ellipses-outline" label="Use Phone Number" onPress={onComplete} />
+        <View style={styles.orRow}><View style={styles.orLine} /><Text style={styles.orText}>or use your credentials</Text><View style={styles.orLine} /></View>
+        <Pressable style={styles.emailEntry} onPress={onBack}><Ionicons name="mail-outline" color={C.ink} size={20} /><Text style={styles.emailEntryText}>Sign In with Email</Text></Pressable>
+        <Text style={styles.legalCopy}>By continuing, you agree to Afritune's Terms of Service and acknowledge our Privacy Policy.</Text>
+      </ScrollView>
+    </View>
+  );
+}
+
+function SocialButton({ icon, label, onPress }) {
+  return <Pressable onPress={onPress} style={styles.socialButton}><Ionicons name={icon} size={21} color={C.ink} /><Text style={styles.socialText}>{label}</Text><Ionicons name="chevron-forward" size={19} color={C.slate} /></Pressable>;
+}
+
+function Brand({ dark = false }) {
+  return (
+    <View style={styles.brand}>
+      <MaterialCommunityIcons name="microphone" size={25} color={dark ? C.ink : C.blue} />
+      <Text style={[styles.brandText, { color: dark ? C.ink : C.blue }]}>AFRITUNE</Text>
+    </View>
+  );
+}
+
+function AppShell({ screen, onNavigate, children }) {
+  return (
+    <View style={styles.shell}>
+      <View style={styles.shellHeader}><Image source={{ uri: source.avatar }} style={styles.avatar} /><Brand /><Pressable accessibilityLabel="Settings"><Ionicons name="settings-outline" size={27} color={C.ink} /></Pressable></View>
+      <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
+        {children}
+      </ScrollView>
+      <BottomNav screen={screen} onNavigate={onNavigate} />
+    </View>
+  );
+}
+
+function TopPageHeader({ title, onBack }) {
+  return <><View style={styles.pageHeader}><Pressable accessibilityRole="button" accessibilityLabel="Go back" onPress={onBack}><Ionicons name="arrow-back" size={26} color={C.ink} /></Pressable><Text style={styles.pageTitle}>{title}</Text><Pressable accessibilityLabel="Search"><Feather name="search" size={22} color={C.ink} /></Pressable></View></>;
+}
+
+function Home({ onNavigate }) {
+  const cards = [
+    ['daily', source.homeDaily, 'Daily Music & Playlists'],
+    ['podcasts', source.homePodcasts, 'Podcasts & Episodes'],
+    ['shows', source.homeShows, 'Latest Shows & Series'],
+    ['favourites', source.homeFavourite, 'All Time Favourite'],
+  ];
+  return (
+    <View>
+      <View style={styles.searchBar}><TextInput accessibilityLabel="Search Afritune" placeholder="Search..." placeholderTextColor={C.slate} style={styles.searchInput} /><Pressable style={styles.searchAction}><Feather name="search" size={19} color={C.paper} /></Pressable></View>
+      <View style={styles.homeCards}>{cards.map(([route, image, label]) => <Pressable accessibilityRole="button" accessibilityLabel={label} key={route} style={styles.homeCard} onPress={() => onNavigate(route)}><Image source={typeof image === 'number' ? image : { uri: image }} style={styles.homeCardImage} /></Pressable>)}</View>
+    </View>
+  );
+}
+
+function DailyMusic({ onBack, onOpenTrack }) {
+  return (
+    <View>
+      <TopPageHeader title="Daily Music & Playlists" onBack={onBack} />
+      <View style={styles.lossless}><MaterialCommunityIcons name="graphic-eq" size={21} color={C.blue} /><Text style={styles.losslessText}>LOSSLESS 24-BIT</Text></View>
+      <View style={styles.albumPanel}>
+        <Image source={{ uri: source.daily }} style={styles.albumArt} />
+        <View style={styles.albumInfo}><Text style={styles.genre}>AFROBEATS • RAP</Text><Text style={styles.albumTitle}>SMA</Text><Text style={styles.albumArtist}>Nasty C feat. Rowlene</Text><Pressable accessibilityLabel="Favourite SMA"><Ionicons name="heart-outline" size={25} color={C.ink} /></Pressable></View>
+      </View>
+      <View style={styles.progressLabels}><Text>01:24</Text><Text>03:45</Text></View><View style={styles.progressTrack}><View style={styles.progressFill} /></View>
+      <View style={styles.transport}><Ionicons name="shuffle" size={22} color={C.ink} /><Ionicons name="play-skip-back" size={23} color={C.ink} /><Pressable style={styles.playButton} onPress={() => onOpenTrack(tracks[0])}><Ionicons name="play" size={24} color={C.paper} /></Pressable><Ionicons name="play-skip-forward" size={23} color={C.ink} /><Ionicons name="repeat" size={22} color={C.ink} /></View>
+      <View style={styles.releaseBox}><View><Text style={styles.releaseLabel}>Upcoming Release</Text><Text style={styles.releaseTitle}>EXCLUSIVE New Drop: Nasty C x Kabza De Small</Text></View><View style={styles.countdown}><Text style={styles.countNumber}>04</Text><Text style={styles.countTiny}>DAYS</Text></View></View>
+      <Text style={styles.sectionTitle}>Amapiano & Afrobeats</Text>
+      {tracks.map((track, index) => <TrackRow key={`${track.title}-${index}`} track={track} number={index + 1} onPress={() => onOpenTrack(track)} />)}
+    </View>
+  );
+}
+
+function TrackRow({ track, number, onPress }) {
+  return <Pressable accessibilityRole="button" onPress={onPress} style={styles.trackRow}><Text style={styles.trackNumber}>{String(number).padStart(2, '0')}</Text><Image source={{ uri: track.art }} style={styles.trackArt} /><View style={styles.trackCopy}><Text style={styles.trackTitle}>{track.title}</Text><Text style={styles.trackArtist}>{track.artist}</Text></View><Ionicons name="play-circle-outline" size={27} color={C.blue} /></Pressable>;
+}
+
+function Podcasts({ onBack }) {
+  return <View><TopPageHeader title="Podcasts and Episodes" onBack={onBack} /><Text style={styles.contentLead}>Stories, culture and conversations from the continent.</Text><View style={styles.podcastGrid}>{podcastCards.map(([title, subtitle, image]) => <View key={title} style={styles.podcastCard}><Image source={{ uri: image }} style={styles.podcastImage} /><Text style={styles.podcastTitle}>{title}</Text><Text style={styles.podcastSubtitle}>{subtitle}</Text><Pressable style={styles.listenLink}><Ionicons name="play-circle" size={16} color={C.blue} /><Text style={styles.listenText}>Listen now</Text></Pressable></View>)}</View></View>;
+}
+
+function Shows({ onBack }) {
+  return <View><TopPageHeader title="Latest Shows & Series" onBack={onBack} /><ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={styles.chips}>{['All Series', 'Nollywood & Drama', 'Reality TV', 'Action & Crime'].map((label, index) => <View key={label} style={[styles.chip, index === 0 && styles.activeChip]}><Text style={[styles.chipText, index === 0 && styles.activeChipText]}>{label}</Text></View>)}</ScrollView><ShowSection title="Your Daily picks" card={shows[0]} /><ShowSection title="Watched Daily" card={shows[1]} /><ShowSection title="Trending Drama" card={shows[2]} /><ShowSection title="Returning Soon" card={shows[3]} /></View>;
+}
+
+function Favourites({ onBack }) {
+  return <View><TopPageHeader title="All Time Favourites" onBack={onBack} /><View style={styles.favouriteBanner}><Ionicons name="heart" size={21} color={C.gold} /><Text style={styles.favouriteBannerText}>Your saved screen favourites</Text></View><ShowSection card={favouriteShows[0]} /><ShowSection title="Watched Daily" card={favouriteShows[1]} /><ShowSection title="Returning Soon" card={favouriteShows[2]} /></View>;
+}
+
+function ShowSection({ title, card }) {
+  const [eyebrow, name, meta, image] = card;
+  return <View style={styles.showSection}>{title ? <View style={styles.showHeading}><Text style={styles.sectionTitle}>{title}</Text><Text style={styles.seeAll}>SEE ALL</Text></View> : null}<Pressable style={styles.showCard}><Image source={{ uri: image }} style={styles.showImage} /><View style={styles.showShade} /><View style={styles.showContent}><Text style={styles.showEyebrow}>{eyebrow}</Text><Text style={styles.showName}>{name}</Text><Text style={styles.showMeta}>{meta}</Text><View style={styles.showPlay}><Ionicons name="play" size={18} color={C.ink} /></View></View></Pressable></View>;
+}
+
+function BottomNav({ screen, onNavigate }) {
+  const items = [
+    ['daily', 'add-circle-outline', 'Create'],
+    ['podcasts', 'headset-outline', 'Podcasts'],
+    ['home', 'home-outline', 'Home'],
+    ['shows', 'play-circle-outline', 'Watch'],
+    ['favourites', 'library-outline', 'Library'],
+  ];
+  return <View style={styles.nav}>{items.map(([id, icon, label]) => <Pressable key={id} accessibilityRole="tab" accessibilityLabel={label} accessibilityState={{ selected: id === screen }} onPress={() => onNavigate(id)} style={styles.navButton}><Ionicons name={icon} size={id === 'home' ? 28 : 25} color={id === screen ? C.blue : C.ink} /><View style={[styles.navDot, id === screen && styles.navDotActive]} /></Pressable>)}</View>;
+}
+
+function Player({ track, onClose }) {
+  const [playing, setPlaying] = useState(false);
+  const [position, setPosition] = useState(17);
+  const duration = 240;
+  useEffect(() => {
+    if (!playing) return undefined;
+    const timer = setInterval(() => setPosition((value) => (value >= duration ? 0 : value + 1)), 1000);
+    return () => clearInterval(timer);
+  }, [playing]);
+  const formatTime = (seconds) => `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
+  const progress = `${Math.round((position / duration) * 100)}%`;
+  return <View style={styles.playerOverlay}><View style={styles.playerTop}><Pressable onPress={onClose} accessibilityLabel="Close player" hitSlop={12}><Ionicons name="arrow-back" size={21} color={C.ink} /></Pressable><Text style={styles.nowPlaying}>Now Playing</Text><Pressable accessibilityLabel="More player options" hitSlop={12}><Ionicons name="ellipsis-horizontal" size={21} color={C.ink} /></Pressable></View><View style={styles.playerCarousel}><View style={styles.playerSideArt} /><Image source={{ uri: track.art }} style={styles.playerArt} /><View style={styles.playerSideArt} /></View><Text style={styles.playerName}>{track.title}</Text><Text style={styles.playerArtist}>{track.artist}</Text><View style={styles.waveWrap}>{Array.from({ length: 28 }).map((_, index) => <View key={index} style={[styles.waveBar, { height: 8 + ((index * 13) % 34), backgroundColor: index < 14 ? C.gold : '#D9E1E7' }]} />)}</View><View style={styles.playerProgress}><View style={[styles.playerProgressFill, { width: progress }]} /><View style={[styles.playerThumb, { left: progress }]} /></View><View style={styles.playerTimes}><Text>{formatTime(position)}</Text><Text>{formatTime(duration)}</Text></View><View style={styles.playerControls}><Pressable accessibilityLabel="Shuffle"><Ionicons name="shuffle" size={19} color={C.muted} /></Pressable><Pressable accessibilityLabel="Previous track" onPress={() => setPosition(Math.max(0, position - 10))}><Ionicons name="play-skip-back" size={22} color={C.muted} /></Pressable><Pressable accessibilityLabel={playing ? 'Pause' : 'Play'} onPress={() => setPlaying(!playing)} style={styles.playerMainControl}><Ionicons name={playing ? 'pause' : 'play'} size={26} color={C.paper} /></Pressable><Pressable accessibilityLabel="Next track" onPress={() => setPosition(Math.min(duration, position + 10))}><Ionicons name="play-skip-forward" size={22} color={C.muted} /></Pressable><Pressable accessibilityLabel="Favourite"><Ionicons name="heart" size={19} color="#F04747" /></Pressable></View><Pressable style={styles.lyricsButton}><Ionicons name="chevron-up" size={15} color={C.blue} /><Text style={styles.lyricsText}>Lyrics</Text></Pressable></View>;
+}
+
+const styles = StyleSheet.create({
+  app: { flex: 1, backgroundColor: C.paper },
+  welcome: { flex: 1, backgroundColor: C.blue },
+  welcomeImage: { flex: 1, width: '100%', resizeMode: 'cover' },
+  welcomeSheet: { minHeight: 290, marginTop: -24, backgroundColor: C.paper, borderTopLeftRadius: 38, borderTopRightRadius: 38, paddingHorizontal: 32, paddingTop: 38, paddingBottom: 28, justifyContent: 'space-between' },
+  welcomeTitle: { color: '#0F172A', fontWeight: '800', fontSize: 34, lineHeight: 40, textAlign: 'center', letterSpacing: -0.7 },
+  primaryPill: { height: 58, marginTop: 24, borderRadius: 30, backgroundColor: C.actionBlue, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 9 },
+  primaryPillText: { color: C.paper, fontSize: 17, fontWeight: '800', letterSpacing: 0.9 },
+  alreadyMember: { color: C.slate, textAlign: 'center', fontSize: 13, marginTop: 16, fontWeight: '600' },
+  blueText: { color: C.blue },
+  authScreen: { flex: 1, backgroundColor: C.paper, overflow: 'hidden' },
+  authDome: { position: 'absolute', top: 0, left: '-20%', width: '140%', height: 198, backgroundColor: C.blue, borderBottomLeftRadius: 360, borderBottomRightRadius: 360 },
+  authTop: { alignItems: 'center', paddingTop: 38, minHeight: 175 },
+  signinTop: { minHeight: 88, justifyContent: 'center', paddingTop: 18 },
+  backButton: { position: 'absolute', left: 23, top: 23, zIndex: 2, padding: 4 },
+  brand: { flexDirection: 'row', alignItems: 'center', gap: 6 },
+  brandText: { fontSize: 21, fontWeight: '900', letterSpacing: 1.2 },
+  authScroll: { paddingHorizontal: 30, paddingTop: 4, paddingBottom: 18, flexGrow: 1 },
+  authTitle: { color: C.ink, fontWeight: '800', textAlign: 'center', fontSize: 29, letterSpacing: -0.6 },
+  authSubtitle: { color: C.slate, fontSize: 14, textAlign: 'center', marginTop: 9, marginBottom: 26 },
+  inputGroup: { marginBottom: 15 },
+  fieldLabel: { color: C.ink, fontSize: 13, fontWeight: '800', marginBottom: 7, marginLeft: 3 },
+  optional: { color: C.muted, fontWeight: '600' },
+  inputBox: { minHeight: 51, borderWidth: 1.2, borderColor: C.blue, borderRadius: 10, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 14, gap: 10 },
+  input: { flex: 1, fontSize: 15, color: C.ink, paddingVertical: 11 },
+  checkRow: { flexDirection: 'row', alignItems: 'center', marginTop: 1, gap: 8 },
+  checkBox: { width: 18, height: 18, borderRadius: 4, backgroundColor: C.blue, alignItems: 'center', justifyContent: 'center' },
+  checkLabel: { color: C.ink, fontSize: 12, fontWeight: '700', flex: 1 },
+  helpText: { color: C.blue, fontSize: 12, fontWeight: '800' },
+  formNotice: { color: '#B42318', fontWeight: '700', fontSize: 12, marginTop: 13, textAlign: 'center' },
+  quickLink: { alignSelf: 'center', marginTop: 18 },
+  quickLinkText: { color: C.blue, fontSize: 13, fontWeight: '800' },
+  authFooter: { paddingHorizontal: 30, paddingBottom: 24, paddingTop: 8 },
+  signupFooter: { paddingHorizontal: 0, paddingBottom: 0, paddingTop: 0, minHeight: 106, justifyContent: 'flex-end', overflow: 'hidden' },
+  authButton: { minHeight: 56, backgroundColor: C.ink, borderRadius: 28, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 8 },
+  signupButton: { borderTopLeftRadius: 90, borderTopRightRadius: 90, borderBottomLeftRadius: 0, borderBottomRightRadius: 0, backgroundColor: C.blue, minHeight: 92, paddingBottom: 15 },
+  authButtonText: { color: C.paper, fontSize: 18, fontWeight: '800' },
+  switchAuth: { color: C.slate, fontSize: 13, textAlign: 'center', fontWeight: '700', marginTop: 15 },
+  quickScreen: { flex: 1, backgroundColor: C.paper },
+  quickHeader: { height: 72, paddingHorizontal: 22, flexDirection: 'row', alignItems: 'center', justifyContent: 'center', borderBottomWidth: 1, borderColor: C.line },
+  quickContent: { padding: 24, paddingBottom: 42 },
+  livePill: { alignSelf: 'center', backgroundColor: '#FFF7DD', borderRadius: 18, paddingHorizontal: 13, paddingVertical: 8, marginBottom: 18 },
+  livePillText: { color: '#896400', fontSize: 11, fontWeight: '900' },
+  quickHero: { height: 185, borderRadius: 20, width: '100%', resizeMode: 'cover' },
+  quickOverline: { color: C.blue, fontSize: 12, fontWeight: '900', marginTop: 20, letterSpacing: 0.6 },
+  quickTitle: { color: C.ink, fontSize: 32, fontWeight: '900', marginTop: 6 },
+  quickCopy: { color: C.slate, lineHeight: 21, fontSize: 15, marginTop: 7, marginBottom: 20 },
+  socialButton: { minHeight: 57, borderRadius: 13, borderWidth: 1, borderColor: C.line, alignItems: 'center', flexDirection: 'row', paddingHorizontal: 17, marginBottom: 11 },
+  socialText: { flex: 1, marginLeft: 12, fontSize: 15, color: C.ink, fontWeight: '800' },
+  orRow: { flexDirection: 'row', alignItems: 'center', gap: 10, marginVertical: 17 },
+  orLine: { height: 1, backgroundColor: C.line, flex: 1 },
+  orText: { color: C.muted, fontSize: 11, fontWeight: '700' },
+  emailEntry: { minHeight: 54, borderRadius: 27, backgroundColor: C.ink, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 8 },
+  emailEntryText: { color: C.paper, fontWeight: '800', fontSize: 15 },
+  legalCopy: { color: C.muted, fontSize: 11, lineHeight: 17, textAlign: 'center', marginTop: 19 },
+  shell: { flex: 1, backgroundColor: C.paper },
+  shellHeader: { height: 79, paddingHorizontal: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 1, borderColor: C.line },
+  avatar: { width: 46, height: 46, borderRadius: 23, backgroundColor: C.sky },
+  scrollContent: { paddingHorizontal: 20, paddingTop: 12, paddingBottom: 103 },
+  searchBar: { height: 56, backgroundColor: '#EFEFEF', borderRadius: 29, paddingLeft: 20, paddingRight: 8, alignItems: 'center', flexDirection: 'row', marginBottom: 19 },
+  searchInput: { flex: 1, color: C.ink, fontSize: 16 },
+  searchAction: { height: 40, width: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: '#2C2C2E' },
+  homeCards: { gap: 16 },
+  homeCard: { height: 176, overflow: 'hidden', borderRadius: 17, backgroundColor: C.soft },
+  homeCardImage: { width: '100%', height: '100%', resizeMode: 'cover' },
+  pageHeader: { minHeight: 55, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 },
+  pageTitle: { color: C.ink, fontWeight: '900', fontSize: 22, letterSpacing: -0.4 },
+  lossless: { flexDirection: 'row', alignItems: 'center', gap: 7, marginTop: 5, marginBottom: 13 },
+  losslessText: { color: C.blue, fontWeight: '900', fontSize: 12, letterSpacing: 1.1 },
+  albumPanel: { flexDirection: 'row', borderRadius: 17, overflow: 'hidden', backgroundColor: C.soft, padding: 14, gap: 14 },
+  albumArt: { height: 158, width: 158, borderRadius: 12, resizeMode: 'cover' },
+  albumInfo: { flex: 1, justifyContent: 'center' },
+  genre: { color: C.blue, fontSize: 10, fontWeight: '900', letterSpacing: 0.7 },
+  albumTitle: { color: C.ink, fontSize: 28, fontWeight: '900', marginTop: 6 },
+  albumArtist: { color: C.slate, fontSize: 13, lineHeight: 18, marginTop: 4, marginBottom: 14 },
+  progressLabels: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 20 },
+  progressTrack: { height: 4, borderRadius: 2, backgroundColor: '#D9E1E7', marginTop: 8 },
+  progressFill: { height: 4, borderRadius: 2, backgroundColor: C.blue, width: '34%' },
+  transport: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', paddingHorizontal: 22, marginVertical: 20 },
+  playButton: { width: 55, height: 55, borderRadius: 28, alignItems: 'center', justifyContent: 'center', backgroundColor: C.ink },
+  releaseBox: { backgroundColor: C.sky, borderRadius: 16, padding: 17, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  releaseLabel: { color: C.blue, fontSize: 11, fontWeight: '900', textTransform: 'uppercase', letterSpacing: 0.6 },
+  releaseTitle: { color: C.ink, fontSize: 14, fontWeight: '800', marginTop: 5, maxWidth: 215, lineHeight: 19 },
+  countdown: { backgroundColor: C.paper, width: 56, height: 56, borderRadius: 12, alignItems: 'center', justifyContent: 'center' },
+  countNumber: { color: C.ink, fontSize: 21, fontWeight: '900' },
+  countTiny: { color: C.slate, fontSize: 9, fontWeight: '900', letterSpacing: 0.6 },
+  sectionTitle: { color: C.ink, fontSize: 20, fontWeight: '900', marginTop: 27, marginBottom: 12 },
+  trackRow: { height: 72, flexDirection: 'row', alignItems: 'center', borderBottomWidth: 1, borderColor: C.line, gap: 11 },
+  trackNumber: { color: C.muted, width: 22, fontSize: 12, fontWeight: '800' },
+  trackArt: { height: 47, width: 47, borderRadius: 8, resizeMode: 'cover' },
+  trackCopy: { flex: 1 },
+  trackTitle: { color: C.ink, fontSize: 15, fontWeight: '900' },
+  trackArtist: { color: C.slate, fontSize: 12, marginTop: 3 },
+  contentLead: { color: C.slate, fontSize: 15, lineHeight: 22, marginBottom: 19 },
+  podcastGrid: { flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', rowGap: 22 },
+  podcastCard: { width: '47%' },
+  podcastImage: { width: '100%', aspectRatio: 1, borderRadius: 16, backgroundColor: C.soft },
+  podcastTitle: { color: C.ink, fontWeight: '900', fontSize: 15, marginTop: 9, lineHeight: 20 },
+  podcastSubtitle: { color: C.slate, fontSize: 11, marginTop: 4, lineHeight: 16 },
+  listenLink: { marginTop: 8, flexDirection: 'row', alignItems: 'center', gap: 4 },
+  listenText: { color: C.blue, fontWeight: '900', fontSize: 12 },
+  chips: { gap: 9, paddingVertical: 7, paddingRight: 20 },
+  chip: { borderWidth: 1, borderColor: C.line, paddingHorizontal: 13, paddingVertical: 8, borderRadius: 18 },
+  activeChip: { backgroundColor: C.ink, borderColor: C.ink },
+  chipText: { color: C.slate, fontSize: 12, fontWeight: '800' },
+  activeChipText: { color: C.paper },
+  showSection: { marginTop: 15 },
+  showHeading: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' },
+  seeAll: { color: C.blue, fontSize: 11, fontWeight: '900', marginTop: 18 },
+  showCard: { height: 223, borderRadius: 18, overflow: 'hidden', backgroundColor: C.soft },
+  showImage: { width: '100%', height: '100%', resizeMode: 'cover' },
+  showShade: { ...StyleSheet.absoluteFillObject, backgroundColor: 'rgba(9, 19, 31, 0.23)' },
+  showContent: { position: 'absolute', left: 18, right: 18, bottom: 17 },
+  showEyebrow: { color: C.gold, fontWeight: '900', fontSize: 10, letterSpacing: 0.8 },
+  showName: { color: C.paper, fontSize: 26, fontWeight: '900', marginTop: 3 },
+  showMeta: { color: C.paper, fontSize: 12, fontWeight: '700', marginTop: 3, paddingRight: 46 },
+  showPlay: { position: 'absolute', right: 0, bottom: 0, height: 43, width: 43, borderRadius: 22, alignItems: 'center', justifyContent: 'center', backgroundColor: C.paper },
+  favouriteBanner: { backgroundColor: '#FFF9E8', borderRadius: 14, padding: 15, flexDirection: 'row', alignItems: 'center', gap: 10, marginTop: 8 },
+  favouriteBannerText: { color: '#806000', fontWeight: '900', fontSize: 13 },
+  nav: { position: 'absolute', bottom: 0, left: 0, right: 0, minHeight: 75, backgroundColor: C.paper, borderTopWidth: 1, borderColor: C.line, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', paddingHorizontal: 8 },
+  navButton: { height: 64, width: 54, alignItems: 'center', justifyContent: 'center' },
+  navDot: { height: 3, width: 3, marginTop: 5, borderRadius: 2, backgroundColor: 'transparent' },
+  navDotActive: { width: 17, backgroundColor: C.blue },
+  playerOverlay: { ...StyleSheet.absoluteFillObject, zIndex: 20, backgroundColor: C.paper, paddingHorizontal: 20, paddingTop: 18 },
+  playerTop: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 3 },
+  nowPlaying: { color: '#293B5A', fontSize: 11, fontWeight: '900', letterSpacing: .2 },
+  playerCarousel: { height: 164, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 22, marginHorizontal: -20, overflow: 'hidden' },
+  playerSideArt: { width: 58, height: 112, borderRadius: 16, backgroundColor: '#E7EDFF' },
+  playerArt: { width: 136, height: 136, borderRadius: 11, resizeMode: 'cover', backgroundColor: C.soft },
+  playerName: { color: '#293B5A', fontSize: 15, fontWeight: '900', textAlign: 'center', marginTop: 12 },
+  playerArtist: { color: C.muted, fontSize: 11, fontWeight: '600', textAlign: 'center', marginTop: 5 },
+  waveWrap: { height: 51, flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'center', gap: 3, marginTop: 18 },
+  waveBar: { width: 2, borderRadius: 2 },
+  playerProgress: { height: 2, backgroundColor: '#D9E1E7', borderRadius: 2, marginTop: 4 },
+  playerProgressFill: { height: 2, backgroundColor: C.gold, borderRadius: 2 },
+  playerThumb: { position: 'absolute', top: -3, width: 8, height: 8, borderRadius: 4, backgroundColor: C.gold, marginLeft: -4 },
+  playerTimes: { flexDirection: 'row', justifyContent: 'space-between', marginTop: 6 },
+  playerControls: { flexDirection: 'row', justifyContent: 'space-around', alignItems: 'center', paddingHorizontal: 13, marginTop: 18 },
+  playerMainControl: { height: 44, width: 44, borderRadius: 22, backgroundColor: C.gold, alignItems: 'center', justifyContent: 'center' },
+  lyricsButton: { alignSelf: 'center', alignItems: 'center', marginTop: 22 },
+  lyricsText: { color: C.blue, fontSize: 11, fontWeight: '800', marginTop: 1 },
 });
