@@ -66,7 +66,9 @@ const source = {
 source.podcasts = [source.homePodcasts, source.homeFavourite, source.homePodcasts, source.homeFavourite, source.homePodcasts, source.homeFavourite];
 source.shows = [source.homeShows, source.homeFavourite, source.homeShows, source.homeFavourite, source.homeShows];
 
-const imageSource = (image) => (typeof image === 'number' ? image : { uri: image });
+// Expo resolves bundled images to an object on web (rather than a numeric
+// resource id). Preserve that object; only remote URLs need a `uri` wrapper.
+const imageSource = (image) => (typeof image === 'string' ? { uri: image } : image);
 
 const tracks = [
   { title: 'SMA', artist: 'Nasty C feat. Rowlene', art: source.daily, videoId: '3V8wZItHf3A' },
