@@ -12,9 +12,7 @@ import {
   TextInput,
   View,
 } from 'react-native';
-import { Feather, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
-
-const C = {
+const LIGHT = {
   blue: '#28A8E0',
   actionBlue: '#0080FF',
   ink: '#161616',
@@ -26,6 +24,14 @@ const C = {
   sky: '#EAF7FD',
   gold: '#FFC404',
 };
+const DARK = { ...LIGHT, ink: '#FFFFFF', slate: '#B5BFCE', muted: '#98A4B5', line: '#30343A', paper: '#121212', soft: '#202124', sky: '#142B38' };
+let C = LIGHT;
+
+const symbols = { 'arrow-forward-circle-outline': '→', 'arrow-back': '←', checkmark: '✓', 'arrow-forward': '→', 'mail-outline': '✉', 'call-outline': '⌕', 'lock-closed-outline': '⌑', 'eye-outline': '◉', 'eye-off-outline': '◌', 'logo-google': 'G', 'logo-apple': '●', 'chatbubble-ellipses-outline': '☏', 'chevron-forward': '›', microphone: '♩', 'settings-outline': '☼', search: '⌕', 'graphic-eq': '≋', 'heart-outline': '♡', heart: '♥', shuffle: '⤨', 'play-skip-back': '◀', play: '▶', 'play-skip-forward': '▶', repeat: '↻', 'play-circle-outline': '◯', 'add-circle-outline': '⊕', 'headset-outline': '◉', 'home-outline': '⌂', 'library-outline': '☷', 'chevron-down': '⌄', 'ellipsis-horizontal': '•••', 'chevron-up': '⌃', 'moon-outline': '◐', 'sunny-outline': '☼', 'open-outline': '↗' };
+function Icon({ name, size = 20, color = C.ink }) { return <Text style={{ color, fontSize: size, lineHeight: size + 3, fontWeight: '800', textAlign: 'center' }}>{symbols[name] || '•'}</Text>; }
+const Ionicons = Icon;
+const Feather = Icon;
+const MaterialCommunityIcons = Icon;
 
 const source = {
   welcome:
@@ -94,19 +100,22 @@ const favouriteShows = [
 export default function App() {
   const [screen, setScreen] = useState('welcome');
   const [activeTrack, setActiveTrack] = useState(null);
+  const [theme, setTheme] = useState('light');
+  C = theme === 'dark' ? DARK : LIGHT;
+  styles = buildStyles(C);
 
   const openTrack = (track) => setActiveTrack(track);
   const closePlayer = () => setActiveTrack(null);
 
   return (
     <SafeAreaView style={styles.app}>
-      <StatusBar style="dark" />
+      <StatusBar style={theme === 'dark' ? 'light' : 'dark'} />
       {screen === 'welcome' && <Welcome onContinue={() => setScreen('signup')} onSignIn={() => setScreen('signin')} />}
       {screen === 'signup' && <AuthScreen mode="signup" onComplete={() => setScreen('home')} onSwitch={() => setScreen('signin')} />}
       {screen === 'signin' && <AuthScreen mode="signin" onComplete={() => setScreen('home')} onSwitch={() => setScreen('signup')} onQuickLogin={() => setScreen('quickLogin')} />}
       {screen === 'quickLogin' && <QuickLogin onBack={() => setScreen('signin')} onComplete={() => setScreen('home')} />}
       {['home', 'daily', 'podcasts', 'shows', 'favourites'].includes(screen) && (
-        <AppShell screen={screen} onNavigate={setScreen}>
+        <AppShell screen={screen} onNavigate={setScreen} isDark={theme === 'dark'} onToggleTheme={() => setTheme((value) => value === 'dark' ? 'light' : 'dark')}>
           {screen === 'home' && <Home onNavigate={setScreen} />}
           {screen === 'daily' && <DailyMusic onBack={() => setScreen('home')} onOpenTrack={openTrack} />}
           {screen === 'podcasts' && <Podcasts onBack={() => setScreen('home')} />}
@@ -231,10 +240,10 @@ function Brand({ dark = false }) {
   );
 }
 
-function AppShell({ screen, onNavigate, children }) {
+function AppShell({ screen, onNavigate, children, isDark, onToggleTheme }) {
   return (
     <View style={styles.shell}>
-      <View style={styles.shellHeader}><Image source={{ uri: source.avatar }} style={styles.avatar} /><Brand /><Pressable accessibilityLabel="Settings"><Ionicons name="settings-outline" size={27} color={C.ink} /></Pressable></View>
+      <View style={styles.shellHeader}><Image source={{ uri: source.avatar }} style={styles.avatar} /><Brand /><Pressable accessibilityLabel={isDark ? 'Switch to light mode' : 'Switch to dark mode'} onPress={onToggleTheme} style={styles.themeToggle}><Ionicons name={isDark ? 'sunny-outline' : 'moon-outline'} size={25} color={C.ink} /></Pressable></View>
       <ScrollView contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
         {children}
       </ScrollView>
@@ -326,12 +335,13 @@ function Player({ track, onClose }) {
   return <View style={styles.playerOverlay}><View style={styles.playerTop}><Pressable onPress={onClose} accessibilityLabel="Close player" hitSlop={12}><Ionicons name="arrow-back" size={21} color={C.ink} /></Pressable><Text style={styles.nowPlaying}>Now Playing</Text><Pressable accessibilityLabel="More player options" hitSlop={12}><Ionicons name="ellipsis-horizontal" size={21} color={C.ink} /></Pressable></View><View style={styles.playerCarousel}><View style={styles.playerSideArt} /><Image source={{ uri: track.art }} style={styles.playerArt} /><View style={styles.playerSideArt} /></View><Text style={styles.playerName}>{track.title}</Text><Text style={styles.playerArtist}>{track.artist}</Text><View style={styles.waveWrap}>{Array.from({ length: 28 }).map((_, index) => <View key={index} style={[styles.waveBar, { height: 8 + ((index * 13) % 34), backgroundColor: index < 14 ? C.gold : '#D9E1E7' }]} />)}</View><View style={styles.playerProgress}><View style={[styles.playerProgressFill, { width: progress }]} /><View style={[styles.playerThumb, { left: progress }]} /></View><View style={styles.playerTimes}><Text>{formatTime(position)}</Text><Text>{formatTime(duration)}</Text></View><View style={styles.playerControls}><Pressable accessibilityLabel="Shuffle"><Ionicons name="shuffle" size={19} color={C.muted} /></Pressable><Pressable accessibilityLabel="Previous track" onPress={() => setPosition(Math.max(0, position - 10))}><Ionicons name="play-skip-back" size={22} color={C.muted} /></Pressable><Pressable accessibilityLabel={playing ? 'Pause' : 'Play'} onPress={() => setPlaying(!playing)} style={styles.playerMainControl}><Ionicons name={playing ? 'pause' : 'play'} size={26} color={C.paper} /></Pressable><Pressable accessibilityLabel="Next track" onPress={() => setPosition(Math.min(duration, position + 10))}><Ionicons name="play-skip-forward" size={22} color={C.muted} /></Pressable><Pressable accessibilityLabel="Favourite"><Ionicons name="heart" size={19} color="#F04747" /></Pressable></View><Pressable style={styles.lyricsButton}><Ionicons name="chevron-up" size={15} color={C.blue} /><Text style={styles.lyricsText}>Lyrics</Text></Pressable></View>;
 }
 
-const styles = StyleSheet.create({
+let styles;
+function buildStyles(C) { return StyleSheet.create({
   app: { flex: 1, backgroundColor: C.paper },
   welcome: { flex: 1, backgroundColor: C.blue },
   welcomeImage: { flex: 1, width: '100%', resizeMode: 'cover' },
   welcomeSheet: { minHeight: 290, marginTop: -24, backgroundColor: C.paper, borderTopLeftRadius: 38, borderTopRightRadius: 38, paddingHorizontal: 32, paddingTop: 38, paddingBottom: 28, justifyContent: 'space-between' },
-  welcomeTitle: { color: '#0F172A', fontWeight: '800', fontSize: 34, lineHeight: 40, textAlign: 'center', letterSpacing: -0.7 },
+  welcomeTitle: { color: C.ink, fontWeight: '800', fontSize: 34, lineHeight: 40, textAlign: 'center', letterSpacing: -0.7 },
   primaryPill: { height: 58, marginTop: 24, borderRadius: 30, backgroundColor: C.actionBlue, alignItems: 'center', justifyContent: 'center', flexDirection: 'row', gap: 9 },
   primaryPillText: { color: C.paper, fontSize: 17, fontWeight: '800', letterSpacing: 0.9 },
   alreadyMember: { color: C.slate, textAlign: 'center', fontSize: 13, marginTop: 16, fontWeight: '600' },
@@ -383,6 +393,7 @@ const styles = StyleSheet.create({
   legalCopy: { color: C.muted, fontSize: 11, lineHeight: 17, textAlign: 'center', marginTop: 19 },
   shell: { flex: 1, backgroundColor: C.paper },
   shellHeader: { height: 79, paddingHorizontal: 20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', borderBottomWidth: 1, borderColor: C.line },
+  themeToggle: { height: 42, width: 42, borderRadius: 21, alignItems: 'center', justifyContent: 'center', backgroundColor: C.soft },
   avatar: { width: 46, height: 46, borderRadius: 23, backgroundColor: C.sky },
   scrollContent: { paddingHorizontal: 20, paddingTop: 12, paddingBottom: 103 },
   searchBar: { height: 56, backgroundColor: '#EFEFEF', borderRadius: 29, paddingLeft: 20, paddingRight: 8, alignItems: 'center', flexDirection: 'row', marginBottom: 19 },
@@ -451,11 +462,11 @@ const styles = StyleSheet.create({
   navDotActive: { width: 17, backgroundColor: C.blue },
   playerOverlay: { ...StyleSheet.absoluteFillObject, zIndex: 20, backgroundColor: C.paper, paddingHorizontal: 20, paddingTop: 18 },
   playerTop: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 3 },
-  nowPlaying: { color: '#293B5A', fontSize: 11, fontWeight: '900', letterSpacing: .2 },
+  nowPlaying: { color: C.ink, fontSize: 11, fontWeight: '900', letterSpacing: .2 },
   playerCarousel: { height: 164, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginTop: 22, marginHorizontal: -20, overflow: 'hidden' },
   playerSideArt: { width: 58, height: 112, borderRadius: 16, backgroundColor: '#E7EDFF' },
   playerArt: { width: 136, height: 136, borderRadius: 11, resizeMode: 'cover', backgroundColor: C.soft },
-  playerName: { color: '#293B5A', fontSize: 15, fontWeight: '900', textAlign: 'center', marginTop: 12 },
+  playerName: { color: C.ink, fontSize: 15, fontWeight: '900', textAlign: 'center', marginTop: 12 },
   playerArtist: { color: C.muted, fontSize: 11, fontWeight: '600', textAlign: 'center', marginTop: 5 },
   waveWrap: { height: 51, flexDirection: 'row', alignItems: 'flex-end', justifyContent: 'center', gap: 3, marginTop: 18 },
   waveBar: { width: 2, borderRadius: 2 },
@@ -467,4 +478,4 @@ const styles = StyleSheet.create({
   playerMainControl: { height: 44, width: 44, borderRadius: 22, backgroundColor: C.gold, alignItems: 'center', justifyContent: 'center' },
   lyricsButton: { alignSelf: 'center', alignItems: 'center', marginTop: 22 },
   lyricsText: { color: C.blue, fontSize: 11, fontWeight: '800', marginTop: 1 },
-});
+}); }
