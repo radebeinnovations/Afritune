@@ -69,6 +69,8 @@ source.shows = [source.homeShows, source.homeFavourite, source.homeShows, source
 // Expo resolves bundled images to an object on web (rather than a numeric
 // resource id). Preserve that object; only remote URLs need a `uri` wrapper.
 const imageSource = (image) => (typeof image === 'string' ? { uri: image } : image);
+// Bundled Expo image modules expose their own web-safe URI.
+const imageUri = (image) => (typeof image === 'string' ? image : image?.uri);
 
 const tracks = [
   { title: 'SMA', artist: 'Nasty C feat. Rowlene', art: source.daily, videoId: '3V8wZItHf3A' },
@@ -296,7 +298,7 @@ function DailyMusic({ onOpenTrack }) {
       <Text style={styles.dailyReferenceTitle}>Daily Music & Playlists</Text>
       <View style={styles.dailyCarousel}>
         <View style={[styles.dailySideCard, styles.dailySideCardLeft]} />
-        <Image source={imageSource(featuredDailyTrack.art)} style={styles.dailyFeatureArt} />
+        <DailyFeatureArtwork image={featuredDailyTrack.art} />
         <View style={[styles.dailySideCard, styles.dailySideCardRight]} />
       </View>
       <Text style={styles.dailyTrackName}>{featuredDailyTrack.title}</Text>
@@ -316,6 +318,19 @@ function DailyMusic({ onOpenTrack }) {
       </View>
     </View>
   );
+}
+
+function DailyFeatureArtwork({ image }) {
+  if (Platform.OS === 'web') {
+    // React Native Web's Image currently puts its background layer behind the
+    // carousel. Use a regular styled view on web so the artwork stays visible.
+    return <View accessibilityLabel="Leftie album artwork" style={[styles.dailyFeatureArt, {
+      backgroundImage: `url(${imageUri(image)})`,
+      backgroundPosition: 'center',
+      backgroundSize: 'cover',
+    }]} />;
+  }
+  return <Image source={imageSource(image)} style={styles.dailyFeatureArt} />;
 }
 
 function TrackRow({ track, number, onPress }) {
@@ -440,10 +455,10 @@ function buildStyles(C) { return StyleSheet.create({
   dailyReferenceScreen: { paddingTop: 1, paddingBottom: 9 },
   dailyReferenceTitle: { color: '#101C39', fontWeight: '900', fontSize: 25, textAlign: 'center', letterSpacing: -0.65, marginTop: 8, marginBottom: 16 },
   dailyCarousel: { height: 286, marginHorizontal: -20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', overflow: 'hidden' },
-  dailySideCard: { width: 69, height: 190, borderRadius: 17 },
+  dailySideCard: { width: 69, height: 190, borderRadius: 17, backgroundColor: '#D8E3FF' },
   dailySideCardLeft: { marginLeft: -24, backgroundColor: '#547C99' },
   dailySideCardRight: { marginRight: -24, backgroundColor: '#587063' },
-  dailyFeatureArt: { height: 230, width: 230, borderRadius: 10, resizeMode: 'cover', shadowColor: '#7A8799', shadowOffset: { width: 9, height: 10 }, shadowOpacity: .22, shadowRadius: 12, elevation: 5 },
+  dailyFeatureArt: { height: 230, width: 230, borderRadius: 10, resizeMode: 'cover', zIndex: 1, shadowColor: '#7A8799', shadowOffset: { width: 9, height: 10 }, shadowOpacity: .22, shadowRadius: 12, elevation: 5 },
   dailyTrackName: { color: '#101C39', textAlign: 'center', fontSize: 20, fontWeight: '900', letterSpacing: -0.35, marginTop: 6 },
   dailyTrackArtist: { color: '#62738F', textAlign: 'center', fontSize: 14, fontWeight: '800', marginTop: 4 },
   freePill: { alignSelf: 'center', backgroundColor: '#E7F7FF', borderRadius: 12, paddingHorizontal: 11, paddingVertical: 3, marginTop: 6 },
