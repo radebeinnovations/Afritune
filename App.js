@@ -318,7 +318,7 @@ function BottomNav({ screen, onNavigate }) {
     ['shows', require('./assets/icon-shows.png'), 'Watch'],
     ['favourites', require('./assets/icon-list.png'), 'Library'],
   ];
-  return <View style={styles.nav}>{items.map(([id, icon, label]) => <Pressable key={id} accessibilityRole="tab" accessibilityLabel={label} accessibilityState={{ selected: id === screen }} onPress={() => onNavigate(id)} style={styles.navButton}><Image source={icon} style={[styles.navIcon, id === 'home' && styles.navHomeIcon, { tintColor: id === screen ? C.blue : C.ink }]} /><View style={[styles.navDot, id === screen && styles.navDotActive]} /></Pressable>)}</View>;
+  return <View style={styles.nav}>{items.map(([id, icon, label]) => <Pressable key={id} accessibilityRole="tab" accessibilityLabel={label} accessibilityState={{ selected: id === screen }} onPress={() => onNavigate(id)} style={styles.navButton}><Image source={icon} style={[styles.navIcon, { tintColor: id === screen ? C.blue : C.ink }]} /><View style={[styles.navDot, id === screen && styles.navDotActive]} /></Pressable>)}</View>;
 }
 
 function Player({ track, onClose }) {
@@ -459,7 +459,6 @@ function buildStyles(C) { return StyleSheet.create({
   nav: { position: 'absolute', bottom: 0, left: 0, right: 0, minHeight: 75, backgroundColor: C.paper, borderTopWidth: 1, borderColor: C.line, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-around', paddingHorizontal: 8 },
   navButton: { height: 64, width: 54, alignItems: 'center', justifyContent: 'center' },
   navIcon: { width: 30, height: 30, resizeMode: 'contain' },
-  navHomeIcon: { width: 38, height: 38 },
   navDot: { height: 3, width: 3, marginTop: 5, borderRadius: 2, backgroundColor: 'transparent' },
   navDotActive: { width: 17, backgroundColor: C.blue },
   playerOverlay: { ...StyleSheet.absoluteFillObject, zIndex: 20, backgroundColor: C.paper, paddingHorizontal: 20, paddingTop: 18 },
