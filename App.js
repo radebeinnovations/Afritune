@@ -27,7 +27,7 @@ const LIGHT = {
 const DARK = { ...LIGHT, ink: '#FFFFFF', slate: '#B5BFCE', muted: '#98A4B5', line: '#30343A', paper: '#121212', soft: '#202124', sky: '#142B38' };
 let C = LIGHT;
 
-const symbols = { 'arrow-forward-circle-outline': '→', 'arrow-back': '←', checkmark: '✓', 'arrow-forward': '→', 'mail-outline': '✉', 'call-outline': '⌕', 'lock-closed-outline': '⌑', 'eye-outline': '◉', 'eye-off-outline': '◌', 'logo-google': 'G', 'logo-apple': '●', 'chatbubble-ellipses-outline': '☏', 'chevron-forward': '›', microphone: '♩', 'settings-outline': '☼', search: '⌕', 'graphic-eq': '≋', 'heart-outline': '♡', heart: '♥', shuffle: '⤨', 'play-skip-back': '⏮', play: '▶', pause: 'Ⅱ', 'play-skip-forward': '⏭', repeat: '↻', 'play-circle-outline': '◯', 'add-circle-outline': '⊕', 'headset-outline': '◉', 'home-outline': '⌂', 'library-outline': '☷', 'chevron-down': '⌄', 'ellipsis-horizontal': '•••', 'chevron-up': '⌃', 'moon-outline': '◐', 'sunny-outline': '☼', 'open-outline': '↗' };
+const symbols = { 'arrow-forward-circle-outline': '→', 'arrow-back': '←', checkmark: '✓', 'arrow-forward': '→', 'mail-outline': '✉', 'call-outline': '⌕', 'lock-closed-outline': '⌑', 'eye-outline': '◉', 'eye-off-outline': '◌', 'logo-google': 'G', 'logo-apple': '●', 'chatbubble-ellipses-outline': '☏', 'chevron-forward': '›', microphone: '♩', 'settings-outline': '☼', search: '⌕', 'graphic-eq': '≋', 'heart-outline': '♡', heart: '♥', shuffle: '⤨', 'play-skip-back': '⏮', play: '▶', pause: 'Ⅱ', 'play-skip-forward': '⏭', 'volume-high': '♬', repeat: '↻', 'play-circle-outline': '◯', 'add-circle-outline': '⊕', 'headset-outline': '◉', 'home-outline': '⌂', 'library-outline': '☷', 'chevron-down': '⌄', 'ellipsis-horizontal': '•••', 'chevron-up': '⌃', 'moon-outline': '◐', 'sunny-outline': '☼', 'open-outline': '↗' };
 function Icon({ name, size = 20, color = C.ink }) { return <Text style={{ color, fontSize: size, lineHeight: size + 3, fontWeight: '800', textAlign: 'center' }}>{symbols[name] || '•'}</Text>; }
 const Ionicons = Icon;
 const Feather = Icon;
@@ -42,7 +42,7 @@ const source = {
   homePodcasts: require('./assets/home-podcasts.png'),
   homeShows: require('./assets/home-shows.png'),
   homeFavourite: require('./assets/stitch/card-01.png'),
-  daily: require('./assets/home-daily.png'),
+  daily: require('./assets/daily-leftie.png'),
   podcasts: [
     'https://lh3.googleusercontent.com/aida-public/AB6AXuB0jfFmpsObtFabtc34bj8GJISY0B2ca0ZGH1sRvoqAodr2qMx-R_N7_m1duFn_QeYzSlPHTyk66VKHvk66Z6RghuGBdOQZ8lgp3268eeOqKYXDJ5crtRxODV0QREOFAOfXjXJm7-r8XjfLgZKwMUL3rxAFfn6qFwR2OIDXQ_ErF80Lqm7Ny2ndsL7DatKzjqF_Acjt70FrLvSTZmks_He_oC1cWBTjJo_e2U2L4DkznleDx_1f9zli',
     'https://lh3.googleusercontent.com/aida-public/AB6AXuA4bnKYj5UpzhJ9qlNEhM-rxo-EkFw8N519fzsIE8M9Qmu3hQ5tosCuMQnfoYQqIk_fDvdAs9xs0yhy-lLrNADsr1HLfpesP8bQg5XNaE-bBLetVGpp1jxrrHOgW60UBOl-4vmxUSMnsVDvwtGrKxlu0K0r2hSbNZcUBbEk5sWIHY8T8Iga3Rios_GTqmg_t0Qu4UUmDakXQ2ddPYberMKS_uHid6Ti_SytWol8t40AT0hw8lJQm8Ec',
@@ -76,6 +76,13 @@ const tracks = [
   { title: 'Imithandazo', artist: 'Kabza De Small & Mthunzi', art: source.daily, videoId: 'KKIE9i-U8WE' },
   { title: 'Mnike', artist: 'Tyler ICU & Tumelo.za', art: source.homeFavourite, videoId: 'HcC2t2t2Bpg' },
 ];
+
+const featuredDailyTrack = {
+  title: 'Leftie (Dlala Ngcobo)',
+  artist: 'Nasty C, Blxckie',
+  art: source.daily,
+  videoId: '3V8wZItHf3A',
+};
 
 const podcastCards = [
   ['Podcast and Chill with MacG', "South Africa's #1 Talk Show", source.podcasts[0]],
@@ -282,20 +289,31 @@ function Home({ onNavigate, onOpenTrack }) {
   );
 }
 
-function DailyMusic({ onBack, onOpenTrack }) {
+function DailyMusic({ onOpenTrack }) {
   return (
-    <View>
-      <TopPageHeader title="Daily Music & Playlists" onBack={onBack} />
-      <View style={styles.lossless}><MaterialCommunityIcons name="graphic-eq" size={21} color={C.blue} /><Text style={styles.losslessText}>LOSSLESS 24-BIT</Text></View>
-      <View style={styles.albumPanel}>
-        <Image source={imageSource(source.daily)} style={styles.albumArt} />
-        <View style={styles.albumInfo}><Text style={styles.genre}>AFROBEATS • RAP</Text><Text style={styles.albumTitle}>SMA</Text><Text style={styles.albumArtist}>Nasty C feat. Rowlene</Text><Pressable accessibilityLabel="Favourite SMA"><Ionicons name="heart-outline" size={25} color={C.ink} /></Pressable></View>
+    <View style={styles.dailyReferenceScreen}>
+      <View style={styles.searchBar}><TextInput accessibilityLabel="Search Afritune" placeholder="Search..." placeholderTextColor={C.slate} style={styles.searchInput} /><Pressable style={styles.searchAction} accessibilityLabel="Search"><Feather name="search" size={19} color={C.paper} /></Pressable></View>
+      <Text style={styles.dailyReferenceTitle}>Daily Music & Playlists</Text>
+      <View style={styles.dailyCarousel}>
+        <View style={[styles.dailySideCard, styles.dailySideCardLeft]} />
+        <Image source={imageSource(featuredDailyTrack.art)} style={styles.dailyFeatureArt} />
+        <View style={[styles.dailySideCard, styles.dailySideCardRight]} />
       </View>
-      <View style={styles.progressLabels}><Text>01:24</Text><Text>03:45</Text></View><View style={styles.progressTrack}><View style={styles.progressFill} /></View>
-      <View style={styles.transport}><Ionicons name="shuffle" size={22} color={C.ink} /><Ionicons name="play-skip-back" size={23} color={C.ink} /><Pressable style={styles.playButton} onPress={() => onOpenTrack(tracks[0])}><Ionicons name="play" size={24} color={C.paper} /></Pressable><Ionicons name="play-skip-forward" size={23} color={C.ink} /><Ionicons name="repeat" size={22} color={C.ink} /></View>
-      <View style={styles.releaseBox}><View><Text style={styles.releaseLabel}>Upcoming Release</Text><Text style={styles.releaseTitle}>EXCLUSIVE New Drop: Nasty C x Kabza De Small</Text></View><View style={styles.countdown}><Text style={styles.countNumber}>04</Text><Text style={styles.countTiny}>DAYS</Text></View></View>
-      <Text style={styles.sectionTitle}>Amapiano & Afrobeats</Text>
-      {tracks.map((track, index) => <TrackRow key={`${track.title}-${index}`} track={track} number={index + 1} onPress={() => onOpenTrack(track)} />)}
+      <Text style={styles.dailyTrackName}>{featuredDailyTrack.title}</Text>
+      <Text style={styles.dailyTrackArtist}>{featuredDailyTrack.artist}</Text>
+      <View style={styles.freePill}><Text style={styles.freePillText}>FREE</Text></View>
+      <View style={styles.dailyTransport}>
+        <Pressable accessibilityLabel="Shuffle"><Ionicons name="shuffle" size={23} color={C.blue} /></Pressable>
+        <Pressable accessibilityLabel="Previous track"><Ionicons name="play-skip-back" size={22} color={C.blue} /></Pressable>
+        <Pressable accessibilityLabel="Play Leftie" style={styles.dailyPlayButton} onPress={() => onOpenTrack(featuredDailyTrack)}><Ionicons name="play" size={25} color={C.paper} /></Pressable>
+        <Pressable accessibilityLabel="Next track"><Ionicons name="play-skip-forward" size={22} color={C.blue} /></Pressable>
+        <Pressable accessibilityLabel="Volume"><Ionicons name="volume-high" size={23} color={C.blue} /></Pressable>
+      </View>
+      <View style={styles.dailyReleaseCard}>
+        <Text style={styles.dailyReleaseEyebrow}>RELEASE COUNTDOWN</Text>
+        <Text style={styles.dailyReleaseFree}>Free</Text>
+        <Text style={styles.dailyReleaseText}>2025 - Upcoming Release</Text>
+      </View>
     </View>
   );
 }
@@ -419,6 +437,23 @@ function buildStyles(C) { return StyleSheet.create({
   homeCards: { gap: 16 },
   homeCard: { height: 176, overflow: 'hidden', borderRadius: 17 },
   homeCardImage: { width: '100%', height: '100%', resizeMode: 'cover' },
+  dailyReferenceScreen: { paddingTop: 1, paddingBottom: 9 },
+  dailyReferenceTitle: { color: '#101C39', fontWeight: '900', fontSize: 25, textAlign: 'center', letterSpacing: -0.65, marginTop: 8, marginBottom: 16 },
+  dailyCarousel: { height: 286, marginHorizontal: -20, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', overflow: 'hidden' },
+  dailySideCard: { width: 69, height: 190, borderRadius: 17 },
+  dailySideCardLeft: { marginLeft: -24, backgroundColor: '#547C99' },
+  dailySideCardRight: { marginRight: -24, backgroundColor: '#587063' },
+  dailyFeatureArt: { height: 230, width: 230, borderRadius: 10, resizeMode: 'cover', shadowColor: '#7A8799', shadowOffset: { width: 9, height: 10 }, shadowOpacity: .22, shadowRadius: 12, elevation: 5 },
+  dailyTrackName: { color: '#101C39', textAlign: 'center', fontSize: 20, fontWeight: '900', letterSpacing: -0.35, marginTop: 6 },
+  dailyTrackArtist: { color: '#62738F', textAlign: 'center', fontSize: 14, fontWeight: '800', marginTop: 4 },
+  freePill: { alignSelf: 'center', backgroundColor: '#E7F7FF', borderRadius: 12, paddingHorizontal: 11, paddingVertical: 3, marginTop: 6 },
+  freePillText: { color: C.blue, fontSize: 11, fontWeight: '900', letterSpacing: 1.1 },
+  dailyTransport: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 20, marginTop: 20 },
+  dailyPlayButton: { width: 61, height: 61, borderRadius: 31, backgroundColor: C.blue, alignItems: 'center', justifyContent: 'center', shadowColor: C.blue, shadowOpacity: .3, shadowRadius: 11, elevation: 5 },
+  dailyReleaseCard: { minHeight: 86, borderRadius: 17, borderWidth: 1, borderColor: '#E7ECF2', backgroundColor: C.paper, alignItems: 'center', justifyContent: 'center', marginTop: 26, shadowColor: '#D6DEE8', shadowOpacity: .25, shadowRadius: 10, elevation: 2 },
+  dailyReleaseEyebrow: { color: '#97A6BE', fontWeight: '900', fontSize: 11, letterSpacing: 1.4 },
+  dailyReleaseFree: { color: '#FFB900', fontWeight: '900', fontSize: 13, marginTop: 5 },
+  dailyReleaseText: { color: '#31415F', fontWeight: '800', fontSize: 13, marginTop: 3 },
   pageHeader: { minHeight: 55, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', marginBottom: 10 },
   pageTitle: { color: C.ink, fontWeight: '900', fontSize: 22, letterSpacing: -0.4 },
   lossless: { flexDirection: 'row', alignItems: 'center', gap: 7, marginTop: 5, marginBottom: 13 },
