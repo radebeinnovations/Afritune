@@ -38,15 +38,11 @@ const source = {
     'https://lh3.googleusercontent.com/aida-public/AB6AXuBO0w5QRBleFpE8i0l9UPWGWBS13zwFaTrEd7eBpytnbv4IGjBt5G7__ljkRyqJhR5BNVI1MypQ5E43Ih67_-tQ21kxL2uLIjFEsZnnup6xihBsjpo21-zlKnchi4wMyZTA0Yj7AMILZg50wa_ihl2B6IHcHzWjJI2xrRGUSr85d576IW_9WcE6-MeV91abekMC7bsukTNG5w0AgOccyNXNqbQwte63acNb3WiIyhu162FrwMSpYfx707BT8hzBIdq2gQ',
   avatar:
     'https://lh3.googleusercontent.com/aida-public/AB6AXuCNNvFK1OYdQXqzb6LELDTX_bbC3AGjq100-XDjeQIeZDk99JBGAWVzGaltBWOrvif5bqB78-zYCNpFXUEL0L1YYwgq_JfFMOGYDTPPUP1Rxa5ucAjnBCPypQCzIyOfg5IOEYmSDUkJqXVnkDw0n_-Dveq4Tqw56POvGpVs3wMVch0AABA0XiYkV6ri2YmijR8Wb4QOeXJ5nrDUBuOIO3MYQMkN8_tiOn2NHK7PwCSg3pmCZi4NPKIc',
-  homeDaily:
-    'https://lh3.googleusercontent.com/aida/AEtjO1WlJXCiWB46URzDOYS0YO0bS7e2AHBohe0rRL8tD3yrL0VncYA47ZFBsFf-vs5ADcinMklbqz4StVz6t1mp_BkcrkCA65iQeD25LudGnTY0LPhYVmAE2irnpIkbwhLoxGpkqaAbdxUzJKpwR5cPKFtnHPGQZbjh2uCs5fucVQLfU0okizgs-TfJfCouEwNFmJ8l3G1RCEcFDUqm_OX_9VV0_mf9-YQG2cTwHTcTQ5s3QX-YAUUlr0XImDj_A0siiTtekvAglDpRPA',
-  homePodcasts:
-    'https://lh3.googleusercontent.com/aida/AEtjO1WC_ngp8i066aUAH9-MxSevM1lqWO7tsmcyEOMuHtAiPa7_1Ys0l9wEbmTxU0M77o7aFCIYH3nv6V_GGPdKd1WhI8aEd0MhDOh0hyuoekgJ-pVUxkO3jOnXZDwUHsEJDEwmZsnUEjm6UoLWg78LwhUiXezrzVhpAFOrOnyaBKn_Tih9mQRRH48aJFKQ2KbtcxMP17NRb_N2borZzIf_-vyXfbS1QEFSO_pwr6Z87LRh5t3m_sou3Fftt28woZ-AvHoJ2OT_59J_8g',
-  homeShows:
-    'https://lh3.googleusercontent.com/aida/AEtjO1Vwvg3esJB4xuQXyLwBEIND-st4QCfSTRtxpxL9WhGGu7aGZMLFs9ofL6DL8xew6yWDd9Rx55SiSMG3EdRapc-cwLzQ--_MQOxWAg3zl2Q3khR5IwKrIg6xjXl-fuasXg74tl2G3nokhh92B0mQGySNqGYUSXJmUdBAm_bCLXpB3R6RHL3QnkwAX_s8NgO68DCKIRX0QmuyqK5sOUtyz6-ajc9iaoCMnjvzcSrzTRzPLMZbqgI4rw6Nq8gtBI4gk6rckGfAXQg4mQ',
+  homeDaily: require('./assets/home-daily.png'),
+  homePodcasts: require('./assets/home-podcasts.png'),
+  homeShows: require('./assets/home-shows.png'),
   homeFavourite: require('./assets/stitch/card-01.png'),
-  daily:
-    'https://lh3.googleusercontent.com/aida-public/AB6AXuBxVkgHumu7Zakpb2Wz832nifeSOqruxUYA807Wy9jXuH1kAlE79c8eY9MwTXoFmtVtRW47s6FiyB1OjXUEM_WCRnIlrdMLWwAdTxwBQ0AwR71RHKs9b-L5yrq4K0C0eR5ztVEpxxUXIRUiMcuyteE3voFMxPwxtFNVDJkyljZvZ0t2qZRCZEj5RthhfAtjzNvYcB34tXhWYmJfTm4xHheiAf2AfLOQCd4cOClZwzocMkIf4Hju_Ojb',
+  daily: require('./assets/home-daily.png'),
   podcasts: [
     'https://lh3.googleusercontent.com/aida-public/AB6AXuB0jfFmpsObtFabtc34bj8GJISY0B2ca0ZGH1sRvoqAodr2qMx-R_N7_m1duFn_QeYzSlPHTyk66VKHvk66Z6RghuGBdOQZ8lgp3268eeOqKYXDJ5crtRxODV0QREOFAOfXjXJm7-r8XjfLgZKwMUL3rxAFfn6qFwR2OIDXQ_ErF80Lqm7Ny2ndsL7DatKzjqF_Acjt70FrLvSTZmks_He_oC1cWBTjJo_e2U2L4DkznleDx_1f9zli',
     'https://lh3.googleusercontent.com/aida-public/AB6AXuA4bnKYj5UpzhJ9qlNEhM-rxo-EkFw8N519fzsIE8M9Qmu3hQ5tosCuMQnfoYQqIk_fDvdAs9xs0yhy-lLrNADsr1HLfpesP8bQg5XNaE-bBLetVGpp1jxrrHOgW60UBOl-4vmxUSMnsVDvwtGrKxlu0K0r2hSbNZcUBbEk5sWIHY8T8Iga3Rios_GTqmg_t0Qu4UUmDakXQ2ddPYberMKS_uHid6Ti_SytWol8t40AT0hw8lJQm8Ec',
@@ -63,6 +59,14 @@ const source = {
     'https://lh3.googleusercontent.com/aida-public/AB6AXuBJ7C7p5Y-FQip8HPemiCRj60Sr7PKDWAutHhwqK_QcsvaOTZyVkwZn4M9iQZcJpQRwS0Ye2JJd_0wK53vNfK0wZZ3wGh0RKvW579q89VgqJO4OzGyI43w4uhW_MNjSl42v00PO30hk4M5AVvq6jMrTvUBgFfNYbqSmtwMQxQmqj2grEBPw5RlzOrhKwZU4KgO29p6i5Ywyj-zHt2knZcMGlUJGDxw1J6fC2N3ns_YnQeizQVS1k_1g',
   ],
 };
+
+// Package the imagery with the app instead of relying on short-lived external
+// design URLs.  These are used by the secondary screens too, so every route
+// has a reliable visual while deployed on Vercel.
+source.podcasts = [source.homePodcasts, source.homeFavourite, source.homePodcasts, source.homeFavourite, source.homePodcasts, source.homeFavourite];
+source.shows = [source.homeShows, source.homeFavourite, source.homeShows, source.homeFavourite, source.homeShows];
+
+const imageSource = (image) => (typeof image === 'number' ? image : { uri: image });
 
 const tracks = [
   { title: 'SMA', artist: 'Nasty C feat. Rowlene', art: source.daily, videoId: '3V8wZItHf3A' },
@@ -116,7 +120,7 @@ export default function App() {
       {screen === 'quickLogin' && <QuickLogin onBack={() => setScreen('signin')} onComplete={() => setScreen('home')} />}
       {['home', 'daily', 'podcasts', 'shows', 'favourites'].includes(screen) && (
         <AppShell screen={screen} onNavigate={setScreen} isDark={theme === 'dark'} onToggleTheme={() => setTheme((value) => value === 'dark' ? 'light' : 'dark')}>
-          {screen === 'home' && <Home onNavigate={setScreen} />}
+          {screen === 'home' && <Home onNavigate={setScreen} onOpenTrack={openTrack} />}
           {screen === 'daily' && <DailyMusic onBack={() => setScreen('home')} onOpenTrack={openTrack} />}
           {screen === 'podcasts' && <Podcasts onBack={() => setScreen('home')} />}
           {screen === 'shows' && <Shows onBack={() => setScreen('home')} />}
@@ -212,7 +216,7 @@ function QuickLogin({ onBack, onComplete }) {
       <View style={styles.quickHeader}><Pressable onPress={onBack}><Ionicons name="arrow-back" size={26} color={C.ink} /></Pressable><Brand dark /></View>
       <ScrollView contentContainerStyle={styles.quickContent} showsVerticalScrollIndicator={false}>
         <View style={styles.livePill}><Text style={styles.livePillText}>🎶 LISTENING PARTY LIVE · 2.4k tuned in</Text></View>
-        <Image source={{ uri: source.homeDaily }} style={styles.quickHero} />
+        <Image source={imageSource(source.homeDaily)} style={styles.quickHero} />
         <Text style={styles.quickOverline}>🔥 AMAPIANO WAVE SA</Text>
         <Text style={styles.quickTitle}>Welcome Back</Text>
         <Text style={styles.quickCopy}>Join listening parties, stream live mixes, and vibe with friends.</Text>
@@ -256,7 +260,7 @@ function TopPageHeader({ title, onBack }) {
   return <><View style={styles.pageHeader}><Pressable accessibilityRole="button" accessibilityLabel="Go back" onPress={onBack}><Ionicons name="arrow-back" size={26} color={C.ink} /></Pressable><Text style={styles.pageTitle}>{title}</Text><Pressable accessibilityLabel="Search"><Feather name="search" size={22} color={C.ink} /></Pressable></View></>;
 }
 
-function Home({ onNavigate }) {
+function Home({ onNavigate, onOpenTrack }) {
   const cards = [
     ['daily', source.homeDaily, 'Daily Music & Playlists'],
     ['podcasts', source.homePodcasts, 'Podcasts & Episodes'],
@@ -266,7 +270,12 @@ function Home({ onNavigate }) {
   return (
     <View>
       <View style={styles.searchBar}><TextInput accessibilityLabel="Search Afritune" placeholder="Search..." placeholderTextColor={C.slate} style={styles.searchInput} /><Pressable style={styles.searchAction}><Feather name="search" size={19} color={C.paper} /></Pressable></View>
-      <View style={styles.homeCards}>{cards.map(([route, image, label]) => <Pressable accessibilityRole="button" accessibilityLabel={label} key={route} style={styles.homeCard} onPress={() => onNavigate(route)}><Image source={typeof image === 'number' ? image : { uri: image }} style={styles.homeCardImage} /></Pressable>)}</View>
+      <Pressable accessibilityRole="button" accessibilityLabel="Open now playing" style={styles.miniPlayer} onPress={() => onOpenTrack(tracks[0])}>
+        <Image source={imageSource(tracks[0].art)} style={styles.miniPlayerArt} />
+        <View style={styles.miniPlayerCopy}><Text style={styles.miniPlayerLabel}>NOW PLAYING</Text><Text style={styles.miniPlayerTitle}>{tracks[0].title} · {tracks[0].artist}</Text></View>
+        <View style={styles.miniPlayerPlay}><Ionicons name="play" size={18} color={C.paper} /></View>
+      </Pressable>
+      <View style={styles.homeCards}>{cards.map(([route, image, label]) => <Pressable accessibilityRole="button" accessibilityLabel={label} key={route} style={styles.homeCard} onPress={() => onNavigate(route)}><Image source={imageSource(image)} style={styles.homeCardImage} /></Pressable>)}</View>
     </View>
   );
 }
@@ -277,7 +286,7 @@ function DailyMusic({ onBack, onOpenTrack }) {
       <TopPageHeader title="Daily Music & Playlists" onBack={onBack} />
       <View style={styles.lossless}><MaterialCommunityIcons name="graphic-eq" size={21} color={C.blue} /><Text style={styles.losslessText}>LOSSLESS 24-BIT</Text></View>
       <View style={styles.albumPanel}>
-        <Image source={{ uri: source.daily }} style={styles.albumArt} />
+        <Image source={imageSource(source.daily)} style={styles.albumArt} />
         <View style={styles.albumInfo}><Text style={styles.genre}>AFROBEATS • RAP</Text><Text style={styles.albumTitle}>SMA</Text><Text style={styles.albumArtist}>Nasty C feat. Rowlene</Text><Pressable accessibilityLabel="Favourite SMA"><Ionicons name="heart-outline" size={25} color={C.ink} /></Pressable></View>
       </View>
       <View style={styles.progressLabels}><Text>01:24</Text><Text>03:45</Text></View><View style={styles.progressTrack}><View style={styles.progressFill} /></View>
@@ -290,11 +299,11 @@ function DailyMusic({ onBack, onOpenTrack }) {
 }
 
 function TrackRow({ track, number, onPress }) {
-  return <Pressable accessibilityRole="button" onPress={onPress} style={styles.trackRow}><Text style={styles.trackNumber}>{String(number).padStart(2, '0')}</Text><Image source={{ uri: track.art }} style={styles.trackArt} /><View style={styles.trackCopy}><Text style={styles.trackTitle}>{track.title}</Text><Text style={styles.trackArtist}>{track.artist}</Text></View><Ionicons name="play-circle-outline" size={27} color={C.blue} /></Pressable>;
+  return <Pressable accessibilityRole="button" onPress={onPress} style={styles.trackRow}><Text style={styles.trackNumber}>{String(number).padStart(2, '0')}</Text><Image source={imageSource(track.art)} style={styles.trackArt} /><View style={styles.trackCopy}><Text style={styles.trackTitle}>{track.title}</Text><Text style={styles.trackArtist}>{track.artist}</Text></View><Ionicons name="play-circle-outline" size={27} color={C.blue} /></Pressable>;
 }
 
 function Podcasts({ onBack }) {
-  return <View><TopPageHeader title="Podcasts and Episodes" onBack={onBack} /><Text style={styles.contentLead}>Stories, culture and conversations from the continent.</Text><View style={styles.podcastGrid}>{podcastCards.map(([title, subtitle, image]) => <View key={title} style={styles.podcastCard}><Image source={{ uri: image }} style={styles.podcastImage} /><Text style={styles.podcastTitle}>{title}</Text><Text style={styles.podcastSubtitle}>{subtitle}</Text><Pressable style={styles.listenLink}><Ionicons name="play-circle" size={16} color={C.blue} /><Text style={styles.listenText}>Listen now</Text></Pressable></View>)}</View></View>;
+  return <View><TopPageHeader title="Podcasts and Episodes" onBack={onBack} /><Text style={styles.contentLead}>Stories, culture and conversations from the continent.</Text><View style={styles.podcastGrid}>{podcastCards.map(([title, subtitle, image]) => <View key={title} style={styles.podcastCard}><Image source={imageSource(image)} style={styles.podcastImage} /><Text style={styles.podcastTitle}>{title}</Text><Text style={styles.podcastSubtitle}>{subtitle}</Text><Pressable style={styles.listenLink}><Ionicons name="play-circle" size={16} color={C.blue} /><Text style={styles.listenText}>Listen now</Text></Pressable></View>)}</View></View>;
 }
 
 function Shows({ onBack }) {
@@ -307,7 +316,7 @@ function Favourites({ onBack }) {
 
 function ShowSection({ title, card }) {
   const [eyebrow, name, meta, image] = card;
-  return <View style={styles.showSection}>{title ? <View style={styles.showHeading}><Text style={styles.sectionTitle}>{title}</Text><Text style={styles.seeAll}>SEE ALL</Text></View> : null}<Pressable style={styles.showCard}><Image source={{ uri: image }} style={styles.showImage} /><View style={styles.showShade} /><View style={styles.showContent}><Text style={styles.showEyebrow}>{eyebrow}</Text><Text style={styles.showName}>{name}</Text><Text style={styles.showMeta}>{meta}</Text><View style={styles.showPlay}><Ionicons name="play" size={18} color={C.ink} /></View></View></Pressable></View>;
+  return <View style={styles.showSection}>{title ? <View style={styles.showHeading}><Text style={styles.sectionTitle}>{title}</Text><Text style={styles.seeAll}>SEE ALL</Text></View> : null}<Pressable style={styles.showCard}><Image source={imageSource(image)} style={styles.showImage} /><View style={styles.showShade} /><View style={styles.showContent}><Text style={styles.showEyebrow}>{eyebrow}</Text><Text style={styles.showName}>{name}</Text><Text style={styles.showMeta}>{meta}</Text><View style={styles.showPlay}><Ionicons name="play" size={18} color={C.ink} /></View></View></Pressable></View>;
 }
 
 function BottomNav({ screen, onNavigate }) {
@@ -332,7 +341,7 @@ function Player({ track, onClose }) {
   }, [playing]);
   const formatTime = (seconds) => `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, '0')}`;
   const progress = `${Math.round((position / duration) * 100)}%`;
-  return <View style={styles.playerOverlay}><View style={styles.playerTop}><Pressable onPress={onClose} accessibilityLabel="Close player" hitSlop={12}><Ionicons name="arrow-back" size={24} color="#293B5A" /></Pressable><Text style={styles.nowPlaying}>Now Playing</Text><Pressable accessibilityLabel="More player options" hitSlop={12}><Ionicons name="ellipsis-horizontal" size={20} color="#293B5A" /></Pressable></View><View style={styles.playerCarousel}><View style={styles.playerSideArt} /><Image source={{ uri: track.art }} style={styles.playerArt} /><View style={styles.playerSideArt} /></View><Text style={styles.playerName}>{track.title}</Text><Text style={styles.playerArtist}>{track.artist}</Text><View style={styles.waveWrap}>{Array.from({ length: 30 }).map((_, index) => { const arc = Math.sin((index / 29) * Math.PI); return <View key={index} style={[styles.waveBar, { height: 17 + Math.round(73 * arc), backgroundColor: index < 15 ? C.gold : '#DEE5ED' }]} />; })}</View><View style={styles.playerProgress}><View style={[styles.playerProgressFill, { width: progress }]} /><View style={[styles.playerThumb, { left: progress }]} /></View><View style={styles.playerTimes}><Text style={styles.elapsedTime}>{formatTime(position)}</Text><Text style={styles.totalTime}>{formatTime(duration)}</Text></View><View style={styles.playerControls}><Pressable accessibilityLabel="Shuffle"><Ionicons name="shuffle" size={22} color="#B5BFD0" /></Pressable><Pressable accessibilityLabel="Previous track" onPress={() => setPosition(Math.max(0, position - 10))}><Ionicons name="play-skip-back" size={24} color="#B5BFD0" /></Pressable><Pressable accessibilityLabel={playing ? 'Pause' : 'Play'} onPress={() => setPlaying(!playing)} style={styles.playerMainControl}><Ionicons name={playing ? 'pause' : 'play'} size={29} color={C.paper} /></Pressable><Pressable accessibilityLabel="Next track" onPress={() => setPosition(Math.min(duration, position + 10))}><Ionicons name="play-skip-forward" size={24} color="#B5BFD0" /></Pressable><Pressable accessibilityLabel="Favourite"><Ionicons name="heart" size={22} color="#F04747" /></Pressable></View><Pressable style={styles.lyricsButton}><Ionicons name="chevron-up" size={17} color={C.blue} /><Text style={styles.lyricsText}>Lyrics</Text></Pressable></View>;
+  return <View style={styles.playerOverlay}><View style={styles.playerTop}><Pressable onPress={onClose} accessibilityLabel="Close player" hitSlop={12}><Ionicons name="arrow-back" size={24} color="#293B5A" /></Pressable><Text style={styles.nowPlaying}>Now Playing</Text><Pressable accessibilityLabel="More player options" hitSlop={12}><Ionicons name="ellipsis-horizontal" size={20} color="#293B5A" /></Pressable></View><View style={styles.playerCarousel}><View style={styles.playerSideArt} /><Image source={imageSource(track.art)} style={styles.playerArt} /><View style={styles.playerSideArt} /></View><Text style={styles.playerName}>{track.title}</Text><Text style={styles.playerArtist}>{track.artist}</Text><View style={styles.waveWrap}>{Array.from({ length: 30 }).map((_, index) => { const arc = Math.sin((index / 29) * Math.PI); return <View key={index} style={[styles.waveBar, { height: 17 + Math.round(73 * arc), backgroundColor: index < 15 ? C.gold : '#DEE5ED' }]} />; })}</View><View style={styles.playerProgress}><View style={[styles.playerProgressFill, { width: progress }]} /><View style={[styles.playerThumb, { left: progress }]} /></View><View style={styles.playerTimes}><Text style={styles.elapsedTime}>{formatTime(position)}</Text><Text style={styles.totalTime}>{formatTime(duration)}</Text></View><View style={styles.playerControls}><Pressable accessibilityLabel="Shuffle"><Ionicons name="shuffle" size={22} color="#B5BFD0" /></Pressable><Pressable accessibilityLabel="Previous track" onPress={() => setPosition(Math.max(0, position - 10))}><Ionicons name="play-skip-back" size={24} color="#B5BFD0" /></Pressable><Pressable accessibilityLabel={playing ? 'Pause' : 'Play'} onPress={() => setPlaying(!playing)} style={styles.playerMainControl}><Ionicons name={playing ? 'pause' : 'play'} size={29} color={C.paper} /></Pressable><Pressable accessibilityLabel="Next track" onPress={() => setPosition(Math.min(duration, position + 10))}><Ionicons name="play-skip-forward" size={24} color="#B5BFD0" /></Pressable><Pressable accessibilityLabel="Favourite"><Ionicons name="heart" size={22} color="#F04747" /></Pressable></View><Pressable style={styles.lyricsButton}><Ionicons name="chevron-up" size={17} color={C.blue} /><Text style={styles.lyricsText}>Lyrics</Text></Pressable></View>;
 }
 
 let styles;
@@ -399,6 +408,12 @@ function buildStyles(C) { return StyleSheet.create({
   searchBar: { height: 56, backgroundColor: '#EFEFEF', borderRadius: 29, paddingLeft: 20, paddingRight: 8, alignItems: 'center', flexDirection: 'row', marginBottom: 19 },
   searchInput: { flex: 1, color: C.ink, fontSize: 16 },
   searchAction: { height: 40, width: 40, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: '#2C2C2E' },
+  miniPlayer: { minHeight: 68, borderRadius: 15, padding: 8, marginBottom: 16, backgroundColor: C.sky, flexDirection: 'row', alignItems: 'center', gap: 11 },
+  miniPlayerArt: { width: 52, height: 52, borderRadius: 10, resizeMode: 'cover' },
+  miniPlayerCopy: { flex: 1 },
+  miniPlayerLabel: { color: C.blue, fontSize: 10, fontWeight: '900', letterSpacing: 1.1 },
+  miniPlayerTitle: { color: C.ink, fontSize: 13, fontWeight: '800', marginTop: 4 },
+  miniPlayerPlay: { width: 39, height: 39, borderRadius: 20, alignItems: 'center', justifyContent: 'center', backgroundColor: C.blue },
   homeCards: { gap: 16 },
   homeCard: { height: 176, overflow: 'hidden', borderRadius: 17, backgroundColor: C.soft },
   homeCardImage: { width: '100%', height: '100%', resizeMode: 'cover' },
